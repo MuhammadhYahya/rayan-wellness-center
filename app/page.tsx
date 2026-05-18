@@ -1,6 +1,4 @@
 // app/page.tsx
-import Navbar from '@/components/layout/Navbar';
-// import Footer from '@/components/layout/Footer';
 import Hero from '@/components/home/Hero';
 import Stats from '@/components/home/Stats';
 import ServicesGrid from '@/components/home/ServicesGrid';
@@ -10,17 +8,23 @@ import Testimonials from '@/components/home/Testimonials';
 import GalleryPreview from '@/components/home/GalleryPreview';
 import BookingTeaser from '@/components/home/BookingTeaser';
 import Footer from '@/components/layout/Footer';
+import { getServices, getTestimonials } from '@/lib/sanity/queries';
 
-export default function Home() {
+export default async function Home() {
+  const [services, testimonials] = await Promise.all([
+    getServices(),
+    getTestimonials(),
+  ]);
+  const featuredServices = services.slice(0, 8);
+
   return (
     <main className="bg-ivory min-h-screen overflow-hidden">
-      <Navbar />
       <Hero />
       <Stats />
-      <ServicesGrid />
-       <AboutTeaser />
+      <ServicesGrid services={featuredServices} />
+      <AboutTeaser />
       <WhyChooseUs />
-      <Testimonials />
+      <Testimonials testimonials={testimonials} />
       <GalleryPreview />
       <BookingTeaser />
       <Footer />

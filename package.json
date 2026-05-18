@@ -1,14 +1,17 @@
 {
-  "name": "rayans-recovery-wellness-center",
+  "name": "rayanwellness",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:sanity-config": "node scripts/check-sanity-config.mjs"
   },
   "dependencies": {
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",

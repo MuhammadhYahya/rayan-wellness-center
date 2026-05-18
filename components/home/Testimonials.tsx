@@ -1,115 +1,143 @@
-// components/home/Testimonials.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
-const testimonials = [
-  {
-    name: "Dimuthu Perera",
-    role: "Professional Cricketer",
-    quote: "Rayan's sports massage helped me recover faster from injuries. His knowledge of the body and precise technique is outstanding. Best in Sri Lanka.",
-    rating: 5,
-  },
-  {
-    name: "Nadeesha Silva",
-    role: "Corporate Executive",
-    quote: "After months of neck and shoulder pain from desk work, Deep Tissue sessions with Rayan gave me tremendous relief. I feel much more relaxed and energetic.",
-    rating: 5,
-  },
-  {
-    name: "Dr. Kamal Fernando",
-    role: "Medical Doctor",
-    quote: "As a doctor, I highly recommend Rayan. His combination of Ayurvedic Abhyanga and modern techniques is very effective. The peaceful environment is an added bonus.",
-    rating: 5,
-  },
-];
+import type { Testimonial } from '@/lib/sanity/types';
 
-export default function Testimonials() {
+type TestimonialsProps = {
+  testimonials: Testimonial[];
+};
+
+export default function Testimonials({ testimonials }: TestimonialsProps) {
   const [current, setCurrent] = useState(0);
+  const hasTestimonials = testimonials.length > 0;
+  const currentIndex = hasTestimonials ? current % testimonials.length : 0;
 
-  // Auto-slide every 5 seconds
   useEffect(() => {
+    if (!hasTestimonials) {
+      return;
+    }
+
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % testimonials.length);
     }, 5000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [hasTestimonials, testimonials.length]);
+
+  if (!hasTestimonials) {
+    return (
+      <section className="bg-forest py-16 text-ivory md:py-24">
+        <div className="mx-auto max-w-4xl px-5">
+          <div className="mb-12 text-center">
+            <h2 className="font-display mb-4 text-4xl md:text-5xl">
+              What Our Clients Say
+            </h2>
+            <p className="text-sage">
+              Real stories from people who experienced real transformation
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/10 px-8 py-12 text-center backdrop-blur-xl">
+            <p className="text-ivory/85">
+              Add testimonials in Sanity to populate this carousel.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
   const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const currentTestimonial = testimonials[currentIndex];
+  const avatarUrl = currentTestimonial.imageUrl || null;
 
   return (
-    <section className="py-16 md:py-24 bg-forest text-ivory">
-      <div className="max-w-4xl mx-auto px-5">
-        <div className="text-center mb-12">
-          <h2 className="font-display text-4xl md:text-5xl mb-4">
+    <section className="bg-forest py-16 text-ivory md:py-24">
+      <div className="mx-auto max-w-4xl px-5">
+        <div className="mb-12 text-center">
+          <h2 className="font-display mb-4 text-4xl md:text-5xl">
             What Our Clients Say
           </h2>
-          <p className="text-sage">Real stories from people who experienced real transformation</p>
+          <p className="text-sage">
+            Real stories from people who experienced real transformation
+          </p>
         </div>
 
         <div className="relative">
-          <div className="min-h-[320px] flex items-center">
+          <div className="flex min-h-[320px] items-center">
             <AnimatePresence mode="wait">
               <motion.div
-                key={current}
+                key={currentTestimonial._id}
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
+                transition={{ duration: 0.6, ease: 'easeInOut' }}
                 className="w-full"
               >
-                <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 text-center">
-                  {/* Stars */}
-                  <div className="flex justify-center gap-1 mb-8">
-                    {[...Array(testimonials[current].rating)].map((_, i) => (
-                      <Star key={i} className="w-6 h-6 fill-sage text-sage" />
+                <div className="rounded-3xl border border-white/10 bg-white/10 p-8 text-center backdrop-blur-xl md:p-12">
+                  <div className="mb-8 flex justify-center gap-1">
+                    {[...Array(currentTestimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-6 w-6 fill-sage text-sage" />
                     ))}
                   </div>
 
-                  {/* Quote */}
-                  <blockquote className="text-xl md:text-2xl leading-relaxed mb-10 text-ivory/95">
-                    “{testimonials[current].quote}”
+                  {avatarUrl ? (
+                    <div className="mb-6 flex justify-center">
+                      <div className="relative h-20 w-20 overflow-hidden rounded-full border border-white/20">
+                        <Image
+                          src={avatarUrl}
+                          alt={currentTestimonial.image?.alt || currentTestimonial.name}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <blockquote className="mb-10 text-xl leading-relaxed text-ivory/95 md:text-2xl">
+                    &ldquo;{currentTestimonial.quote}&rdquo;
                   </blockquote>
 
-                  {/* Author */}
                   <div>
-                    <p className="font-semibold text-lg">{testimonials[current].name}</p>
-                    <p className="text-sage">{testimonials[current].role}</p>
+                    <p className="text-lg font-semibold">{currentTestimonial.name}</p>
+                    <p className="text-sage">{currentTestimonial.role}</p>
                   </div>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Navigation Buttons */}
           <button
             onClick={prev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 rounded-full transition-all"
+            aria-label="Previous testimonial"
+            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="h-6 w-6" />
           </button>
 
           <button
             onClick={next}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 rounded-full transition-all"
+            aria-label="Next testimonial"
+            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="h-6 w-6" />
           </button>
         </div>
 
-        {/* Dots Indicator */}
-        <div className="flex justify-center gap-3 mt-10">
-          {testimonials.map((_, index) => (
+        <div className="mt-10 flex justify-center gap-3">
+          {testimonials.map((testimonial, index) => (
             <button
-              key={index}
+              key={testimonial._id}
               onClick={() => setCurrent(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                current === index 
-                  ? 'bg-sage w-8' 
-                  : 'bg-white/30 hover:bg-white/50'
+              aria-label={`Show testimonial ${index + 1}`}
+              className={`h-3 rounded-full transition-all ${
+                currentIndex === index ? 'w-8 bg-sage' : 'w-3 bg-white/30 hover:bg-white/50'
               }`}
             />
           ))}
