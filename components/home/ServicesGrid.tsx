@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { getServiceIcon } from '@/lib/sanity/icons';
 import { urlForImage } from '@/lib/sanity/image';
 import type { Service } from '@/lib/sanity/types';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 type ServicesGridProps = {
   services: Service[];
@@ -16,16 +17,17 @@ export default function ServicesGrid({ services }: ServicesGridProps) {
     <section className="bg-ivory py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-5">
         <div className="mb-12 text-center">
-          <h2 className="font-display mb-4 text-4xl text-forest md:text-5xl">
+          <h2 className="mb-4 font-display text-4xl text-forest md:text-5xl">
             What We Offer
           </h2>
-          <p className="mx-auto max-w-md text-charcoal/70">
-            Personalized healing therapies tailored to your body and goals
+          <p className="mx-auto max-w-2xl text-charcoal/70">
+            Personalized healing therapies tailored to your body and goals, delivered in
+            a sanctuary of restorative calm.
           </p>
         </div>
 
         {services.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((service) => {
               const Icon = getServiceIcon(service.iconKey);
               const imageUrl = service.image
@@ -35,10 +37,10 @@ export default function ServicesGrid({ services }: ServicesGridProps) {
               return (
                 <Card
                   key={service._id}
-                  className="group relative overflow-hidden rounded-3xl border border-sage/10 bg-white transition-all duration-500 hover:-translate-y-3 hover:scale-[1.02] hover:border-moss/30 hover:shadow-2xl"
+                  className="group relative overflow-hidden rounded-3xl border border-sage/10 bg-white transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl"
                 >
-                  {imageUrl ? (
-                    <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-56 overflow-hidden">
+                    {imageUrl ? (
                       <Image
                         src={imageUrl}
                         alt={service.image?.alt || service.title}
@@ -46,37 +48,44 @@ export default function ServicesGrid({ services }: ServicesGridProps) {
                         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-forest/30 via-transparent to-transparent" />
-                    </div>
-                  ) : null}
+                    ) : null}
 
-                  <CardHeader className="pb-4 pt-8">
-                    <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-forest/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-moss/10">
-                      <Icon className="h-9 w-9 text-moss transition-transform duration-500 group-hover:rotate-6" />
-                    </div>
-                    <h3 className="text-2xl font-semibold text-forest transition-colors group-hover:text-moss">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+                    {service.duration ? (
+                      <div className="absolute right-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-medium text-forest shadow-md">
+                        {service.duration}
+                      </div>
+                    ) : null}
+
+                    {Icon ? (
+                      <div className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/95 shadow-md">
+                        <Icon className="h-6 w-6 text-moss" />
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <CardContent className="p-6">
+                    <h3 className="mb-3 text-xl font-semibold text-forest transition-colors group-hover:text-moss">
                       {service.title}
                     </h3>
-                  </CardHeader>
 
-                  <CardContent className="pb-8">
-                    <p className="mb-8 text-[15px] leading-relaxed text-charcoal/80">
+                    <p className="mb-6 line-clamp-3 text-[15px] leading-relaxed text-charcoal/80">
                       {service.shortDescription}
                     </p>
 
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-sage">
-                        {service.duration}
-                      </p>
-
+                    <div className="flex justify-end">
                       <Button
                         asChild
                         variant="ghost"
-                        className="text-moss transition-all duration-300 group-hover:gap-2 hover:text-moss/80"
+                        className="group/link h-auto p-0 font-medium text-moss hover:text-moss/80"
                       >
-                        <Link href="/services" className="flex items-center">
+                        <Link
+                          href={`/contact?service=${encodeURIComponent(service.slug || service.title)}`}
+                          className="flex items-center gap-1"
+                        >
                           Learn More
-                          <span className="transition group-hover:translate-x-1">-&gt;</span>
+                          <ArrowRight className="h-4 w-4 transition group-hover/link:translate-x-1" />
                         </Link>
                       </Button>
                     </div>
@@ -99,7 +108,7 @@ export default function ServicesGrid({ services }: ServicesGridProps) {
             size="lg"
             className="rounded-full bg-forest px-10 py-7 text-base text-ivory hover:bg-forest/90"
           >
-            <Link href="/services">View All Services</Link>
+            <Link href="/contact">Book Session</Link>
           </Button>
         </div>
       </div>

@@ -5,30 +5,30 @@ import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
-import type { Testimonial } from '@/lib/sanity/types';
+import type { Review } from '@/lib/sanity/types';
 
 type TestimonialsProps = {
-  testimonials: Testimonial[];
+  reviews: Review[];
 };
 
-export default function Testimonials({ testimonials }: TestimonialsProps) {
+export default function Testimonials({ reviews }: TestimonialsProps) {
   const [current, setCurrent] = useState(0);
-  const hasTestimonials = testimonials.length > 0;
-  const currentIndex = hasTestimonials ? current % testimonials.length : 0;
+  const hasReviews = reviews.length > 0;
+  const currentIndex = hasReviews ? current % reviews.length : 0;
 
   useEffect(() => {
-    if (!hasTestimonials) {
+    if (!hasReviews) {
       return;
     }
 
     const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length);
+      setCurrent((prev) => (prev + 1) % reviews.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [hasTestimonials, testimonials.length]);
+  }, [hasReviews, reviews.length]);
 
-  if (!hasTestimonials) {
+  if (!hasReviews) {
     return (
       <section className="bg-forest py-16 text-ivory md:py-24">
         <div className="mx-auto max-w-4xl px-5">
@@ -43,7 +43,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
 
           <div className="rounded-3xl border border-white/10 bg-white/10 px-8 py-12 text-center backdrop-blur-xl">
             <p className="text-ivory/85">
-              Add testimonials in Sanity to populate this carousel.
+              Approve and feature reviews in Sanity to populate this carousel.
             </p>
           </div>
         </div>
@@ -51,10 +51,10 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
     );
   }
 
-  const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
-  const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  const currentTestimonial = testimonials[currentIndex];
-  const avatarUrl = currentTestimonial.imageUrl || null;
+  const next = () => setCurrent((prev) => (prev + 1) % reviews.length);
+  const prev = () => setCurrent((prev) => (prev - 1 + reviews.length) % reviews.length);
+  const currentReview = reviews[currentIndex];
+  const avatarUrl = currentReview.imageUrl || null;
 
   return (
     <section className="bg-forest py-16 text-ivory md:py-24">
@@ -72,7 +72,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
           <div className="flex min-h-[320px] items-center">
             <AnimatePresence mode="wait">
               <motion.div
-                key={currentTestimonial._id}
+                key={currentReview._id}
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -30 }}
@@ -81,8 +81,8 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
               >
                 <div className="rounded-3xl border border-white/10 bg-white/10 p-8 text-center backdrop-blur-xl md:p-12">
                   <div className="mb-8 flex justify-center gap-1">
-                    {[...Array(currentTestimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-6 w-6 fill-sage text-sage" />
+                    {[...Array(currentReview.rating)].map((_, index) => (
+                      <Star key={index} className="h-6 w-6 fill-sage text-sage" />
                     ))}
                   </div>
 
@@ -91,7 +91,7 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
                       <div className="relative h-20 w-20 overflow-hidden rounded-full border border-white/20">
                         <Image
                           src={avatarUrl}
-                          alt={currentTestimonial.image?.alt || currentTestimonial.name}
+                          alt={currentReview.image?.alt || currentReview.name}
                           fill
                           sizes="80px"
                           className="object-cover"
@@ -101,12 +101,14 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
                   ) : null}
 
                   <blockquote className="mb-10 text-xl leading-relaxed text-ivory/95 md:text-2xl">
-                    &ldquo;{currentTestimonial.quote}&rdquo;
+                    &ldquo;{currentReview.quote}&rdquo;
                   </blockquote>
 
                   <div>
-                    <p className="text-lg font-semibold">{currentTestimonial.name}</p>
-                    <p className="text-sage">{currentTestimonial.role}</p>
+                    <p className="text-lg font-semibold">{currentReview.name}</p>
+                    {currentReview.role ? (
+                      <p className="text-sage">{currentReview.role}</p>
+                    ) : null}
                   </div>
                 </div>
               </motion.div>
@@ -131,9 +133,9 @@ export default function Testimonials({ testimonials }: TestimonialsProps) {
         </div>
 
         <div className="mt-10 flex justify-center gap-3">
-          {testimonials.map((testimonial, index) => (
+          {reviews.map((review, index) => (
             <button
-              key={testimonial._id}
+              key={review._id}
               onClick={() => setCurrent(index)}
               aria-label={`Show testimonial ${index + 1}`}
               className={`h-3 rounded-full transition-all ${

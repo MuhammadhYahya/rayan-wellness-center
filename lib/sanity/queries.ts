@@ -2,7 +2,7 @@ import 'server-only';
 
 import { getSanityClient } from '@/lib/sanity/client';
 import { urlForImage } from '@/lib/sanity/image';
-import type { Service, Testimonial } from '@/lib/sanity/types';
+import type { Review, Service } from '@/lib/sanity/types';
 
 const servicesQuery = `*[_type == "service"] | order(order asc, title asc) {
   _id,
@@ -16,30 +16,67 @@ const servicesQuery = `*[_type == "service"] | order(order asc, title asc) {
   image
 }`;
 
-const testimonialsQuery = `*[_type == "testimonial"] | order(order asc, name asc) {
+const reviewFields = `
   _id,
   name,
   role,
   quote,
   rating,
-  order,
-  image
+  status,
+  featured,
+  featuredOrder,
+  submittedAt,
+  approvedAt,
+  consentToPublish,
+  submissionSource,
+  image,
+  service->{
+    _id,
+    title,
+    "slug": slug.current
+  }
+`;
+
+const featuredReviewsQuery = `*[_type == "review" && status == "approved" && featured == true] | order(featuredOrder asc, approvedAt desc, name asc) {
+  ${reviewFields}
+}`;
+
+const approvedReviewsQuery = `*[_type == "review" && status == "approved"] | order(approvedAt desc, submittedAt desc, name asc) {
+  ${reviewFields}
 }`;
 
 export async function getServices(): Promise<Service[]> {
   const client = getSanityClient();
-  return client.fetch<Service[]>(servicesQuery);
-}
+  const services = await client.fetch<Service[]>(servicesQuery);
 
-export async function getTestimonials(): Promise<Testimonial[]> {
-  const client = getSanityClient();
-  const testimonials = await client.fetch<Testimonial[]>(testimonialsQuery);
-
-  return testimonials.map((testimonial) => ({
-    ...testimonial,
-    rating: Math.max(1, Math.min(5, Math.round(testimonial.rating))),
-    imageUrl: testimonial.image
-      ? urlForImage(testimonial.image).width(160).height(160).fit('crop').url()
+  return services.map((service) => ({
+    ...service,
+    imageUrl: service.image
+      ? urlForImage(service.image).width(1100).height(820).fit('crop').url()
       : undefined,
   }));
+}
+
+function mapReview(review: Review): Review {
+  return {
+    ...review,
+    rating: Math.max(1, Math.min(5, Math.round(review.rating))),
+    imageUrl: review.image
+      ? urlForImage(review.image).width(240).height(240).fit('crop').url()
+      : undefined,
+  };
+}
+
+export async function getFeaturedReviews(): Promise<Review[]> {
+  const client = getSanityClient();
+  const reviews = await client.fetch<Review[]>(featuredReviewsQuery);
+
+  return reviews.map(mapReview);
+}
+
+export async function getApprovedReviews(): Promise<Review[]> {
+  const client = getSanityClient();
+  const reviews = await client.fetch<Review[]>(approvedReviewsQuery);
+
+  return reviews.map(mapReview);
 }

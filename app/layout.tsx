@@ -4,7 +4,7 @@ import Navbar from '@/components/layout/Navbar';
 import SocialSidebar from "@/components/layout/SocialSidebar";
 export const metadata: Metadata = {
   title: "Rayan's Recovery & Wellness Center",
-  description: "Holistic recovery, massage therapy, yoga, and wellness services in Matugama, Sri Lanka.",
+  description: "Holistic recovery, massage therapy, yoga, and wellness services in Keeranthidiya, Sri Lanka.",
 };
 
 export default function RootLayout({

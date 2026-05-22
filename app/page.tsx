@@ -8,23 +8,22 @@ import Testimonials from '@/components/home/Testimonials';
 import GalleryPreview from '@/components/home/GalleryPreview';
 import BookingTeaser from '@/components/home/BookingTeaser';
 import Footer from '@/components/layout/Footer';
-import { getServices, getTestimonials } from '@/lib/sanity/queries';
+import { getFeaturedReviews, getServices } from '@/lib/sanity/queries';
 
 export default async function Home() {
-  const [services, testimonials] = await Promise.all([
+  const [services, reviews] = await Promise.all([
     getServices(),
-    getTestimonials(),
+    getFeaturedReviews(),
   ]);
-  const featuredServices = services.slice(0, 8);
 
   return (
     <main className="bg-ivory min-h-screen overflow-hidden">
       <Hero />
       <Stats />
-      <ServicesGrid services={featuredServices} />
+      <ServicesGrid services={services} />
       <AboutTeaser />
       <WhyChooseUs />
-      <Testimonials testimonials={testimonials} />
+      <Testimonials reviews={reviews} />
       <GalleryPreview />
       <BookingTeaser />
       <Footer />

@@ -27,15 +27,31 @@ export type Service = {
   order: number;
   iconKey?: ServiceIconKey | string;
   image?: SanityImageSource;
+  imageUrl?: string;
 };
 
-export type Testimonial = {
+export type ReviewStatus = 'pending' | 'approved' | 'rejected';
+
+export type Review = {
   _id: string;
   name: string;
-  role: string;
+  role?: string;
+  email?: string;
+  phone?: string;
   quote: string;
   rating: number;
-  order: number;
+  status: ReviewStatus;
+  featured: boolean;
+  featuredOrder?: number;
+  submittedAt?: string;
+  approvedAt?: string;
+  consentToPublish: boolean;
+  submissionSource?: string;
   image?: SanityImageSource;
   imageUrl?: string;
+  service?: {
+    _id: string;
+    title: string;
+    slug?: string;
+  };
 };

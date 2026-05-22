@@ -1,10 +1,7 @@
-import Image from 'next/image';
-import { BadgeCheck } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, BadgeCheck, CalendarDays, Sparkles } from 'lucide-react';
 
-import ServicesGrid from '@/components/home/ServicesGrid';
 import Footer from '@/components/layout/Footer';
-import { getServiceIcon } from '@/lib/sanity/icons';
-import { urlForImage } from '@/lib/sanity/image';
 import { getServices } from '@/lib/sanity/queries';
 
 export default async function ServicesPage() {
@@ -21,87 +18,104 @@ export default async function ServicesPage() {
             Services Rooted in Recovery, Strength, and Calm
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-sage/90">
-            Explore the full treatment menu managed in Sanity, from sports recovery
-            work to restorative massage and mindful movement.
+            Every treatment is now showcased in detail on the homepage. Use this page
+            as your quick guide, then book the session that best supports your recovery.
           </p>
         </div>
       </section>
 
-      <ServicesGrid services={services} />
-
-      <section className="px-5 pb-20">
+      <section className="px-5 py-20">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10">
-            <h2 className="font-display text-3xl text-forest md:text-4xl">
-              Detailed service guide
-            </h2>
-            <p className="mt-3 max-w-2xl text-charcoal/70">
-              Each item below uses the same Sanity dataset as the homepage cards.
-            </p>
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="rounded-[2rem] border border-sage/15 bg-white p-8 shadow-sm md:p-10">
+              <p className="text-sm uppercase tracking-[0.3em] text-moss">Quick guide</p>
+              <h2 className="mt-4 font-display text-3xl text-forest md:text-4xl">
+                Browse all treatments on the homepage, then reserve the one that fits.
+              </h2>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-charcoal/75">
+                The homepage now gives each treatment a live detail preview with service
+                image, duration, and a fuller explanation. This page stays lighter so
+                you can move straight into booking when you are ready.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                {services.length > 0 ? (
+                  services.map((service) => (
+                    <span
+                      key={service._id}
+                      className="rounded-full border border-sage/20 bg-ivory px-4 py-2 text-sm font-medium text-forest"
+                    >
+                      {service.title}
+                    </span>
+                  ))
+                ) : (
+                  <span className="rounded-full border border-dashed border-sage/30 px-4 py-2 text-sm text-charcoal/65">
+                    Services will appear here once published in Sanity.
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/#services"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-forest px-7 py-4 text-base font-medium text-ivory transition hover:bg-forest/92"
+                >
+                  See Treatments in Detail
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-moss/20 bg-moss/10 px-7 py-4 text-base font-medium text-moss transition hover:bg-moss/15"
+                >
+                  Book a Session
+                  <CalendarDays className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] bg-forest p-8 text-ivory shadow-sm md:p-10">
+              <p className="text-sm uppercase tracking-[0.3em] text-sage">Why book now</p>
+              <div className="mt-6 space-y-5">
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+                  <div className="flex items-center gap-3 text-sage">
+                    <BadgeCheck className="h-5 w-5" />
+                    <span className="text-sm font-medium uppercase tracking-[0.22em]">
+                      Guided selection
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-ivory/80">
+                    Use the homepage treatment previews to compare recovery, relaxation,
+                    and mobility-focused sessions before booking.
+                  </p>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+                  <div className="flex items-center gap-3 text-sage">
+                    <Sparkles className="h-5 w-5" />
+                    <span className="text-sm font-medium uppercase tracking-[0.22em]">
+                      Personalized care
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-ivory/80">
+                    Every session is adapted to your body, schedule, and recovery goals.
+                  </p>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
+                  <div className="flex items-center gap-3 text-sage">
+                    <CalendarDays className="h-5 w-5" />
+                    <span className="text-sm font-medium uppercase tracking-[0.22em]">
+                      Faster booking
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-ivory/80">
+                    Send your details through the booking form and continue on WhatsApp
+                    if you want a faster confirmation.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-
-          {services.length > 0 ? (
-            <div className="space-y-8">
-              {services.map((service) => {
-                const Icon = getServiceIcon(service.iconKey);
-                const imageUrl = service.image
-                  ? urlForImage(service.image).width(1200).height(720).fit('crop').url()
-                  : null;
-
-                return (
-                  <article
-                    key={service._id}
-                    className="grid gap-6 overflow-hidden rounded-[2rem] border border-sage/15 bg-white shadow-sm lg:grid-cols-[1.2fr_1fr]"
-                  >
-                    <div className="p-8 md:p-10">
-                      <div className="mb-5 flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-moss/10 text-moss">
-                          <Icon className="h-7 w-7" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-semibold text-forest md:text-3xl">
-                            {service.title}
-                          </h3>
-                          <p className="mt-1 text-sm font-medium uppercase tracking-[0.2em] text-sage">
-                            {service.duration}
-                          </p>
-                        </div>
-                      </div>
-
-                      <p className="text-base leading-7 text-charcoal/80">
-                        {service.longDescription || service.shortDescription}
-                      </p>
-
-                      <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-moss/10 px-4 py-2 text-sm font-medium text-moss">
-                        <BadgeCheck className="h-4 w-4" />
-                        Bookable service
-                      </div>
-                    </div>
-
-                    <div className="relative min-h-[260px] bg-forest/5">
-                      {imageUrl ? (
-                        <Image
-                          src={imageUrl}
-                          alt={service.image?.alt || service.title}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 40vw"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center p-10 text-center text-charcoal/55">
-                          Add a service image in Sanity to enrich this section.
-                        </div>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="rounded-[2rem] border border-dashed border-sage/30 bg-white/80 px-8 py-16 text-center text-charcoal/70">
-              No services have been published in Sanity yet.
-            </div>
-          )}
         </div>
       </section>
 

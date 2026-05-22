@@ -4,15 +4,15 @@ import { useState } from 'react';
 import { 
   FaFacebookF, 
   FaInstagram, 
-  FaYoutube, 
   FaWhatsapp 
 } from 'react-icons/fa';
+import { AiFillTikTok } from "react-icons/ai";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const socialLinks = [
-  { icon: FaFacebookF, href: "https://facebook.com", color: "hover:bg-blue-600" },
-  { icon: FaInstagram, href: "https://instagram.com", color: "hover:bg-pink-600" },
-  { icon: FaYoutube, href: "https://youtube.com", color: "hover:bg-red-600" },
+  { icon: FaFacebookF, href: "https://www.facebook.com/people/Rayan-Vidumina", color: "hover:bg-blue-600" },
+  { icon: FaInstagram, href: "https://www.instagram.com/rayans_recovery_wellness_cener", color: "hover:bg-pink-600" },
+  { icon: AiFillTikTok , href: "https://www.tiktok.com/@rayanvidumina", color: "hover:bg-red-600" },
   { icon: FaWhatsapp, href: "https://wa.me/94762985339", color: "hover:bg-green-600" },
 ];
 
