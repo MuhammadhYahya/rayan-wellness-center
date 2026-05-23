@@ -32,8 +32,7 @@ export default function ReviewSubmissionForm({
           Share how your session felt
         </h2>
         <p className="max-w-2xl text-base leading-7 text-charcoal/70">
-          Tell future clients what helped you most. Every submission is reviewed
-          before it goes live on the site.
+          Tell future clients what helped you most. 
         </p>
       </div>
 
@@ -202,27 +201,13 @@ export default function ReviewSubmissionForm({
             className="mt-1 h-4 w-4 rounded border-sage/30 text-moss focus:ring-moss"
           />
           <span>
-            I confirm this review reflects my real experience and may be published on
-            the website once approved.
+            I confirm this review reflects my real experience and I consent to it being published on the website.
           </span>
         </label>
 
         {state.fieldErrors?.consentToPublish ? (
           <p className="text-sm text-red-600">{state.fieldErrors.consentToPublish}</p>
         ) : null}
-
-        <div className="rounded-[1.5rem] border border-sage/15 bg-forest p-5 text-sm leading-6 text-ivory/80">
-          <div className="flex items-center gap-3 text-sage">
-            <ShieldCheck className="h-5 w-5" />
-            <span className="font-medium uppercase tracking-[0.22em]">
-              Moderated publishing
-            </span>
-          </div>
-          <p className="mt-3">
-            Reviews are submitted privately first, then approved before they appear on
-            the homepage or reviews page.
-          </p>
-        </div>
 
         {state.status !== 'idle' ? (
           <div
