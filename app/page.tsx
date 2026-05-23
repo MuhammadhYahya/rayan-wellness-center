@@ -2,7 +2,6 @@
 import Hero from '@/components/home/Hero';
 import Stats from '@/components/home/Stats';
 import ServicesGrid from '@/components/home/ServicesGrid';
-import AboutTeaser from '@/components/home/AboutTeaser';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
 import Testimonials from '@/components/home/Testimonials';
 import GalleryPreview from '@/components/home/GalleryPreview';
@@ -21,7 +20,6 @@ export default async function Home() {
       <Hero />
       <Stats />
       <ServicesGrid services={services} />
-      <AboutTeaser />
       <WhyChooseUs />
       <Testimonials reviews={reviews} />
       <GalleryPreview />

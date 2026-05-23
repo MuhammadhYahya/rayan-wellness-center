@@ -24,6 +24,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,7 +70,7 @@ export default function Navbar() {
           </Button>
         </div>
 
-        <Sheet>
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
           <SheetTrigger asChild>
             <Button
               variant="ghost"
@@ -94,6 +95,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className="rounded-xl px-4 py-3 text-lg font-medium transition-all duration-200 hover:bg-white/10"
                   >
                     {link.label}

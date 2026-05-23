@@ -202,7 +202,7 @@ export default function BookingForm({
 
       setStatus('success');
       setStatusMessage(
-        'Your booking request was sent successfully. You can continue on WhatsApp for a faster confirmation.'
+        'Your booking request was sent successfully. You can also continue on WhatsApp for more immediate assistance.'
       );
       setFormState({
         ...DEFAULT_FORM,
@@ -222,17 +222,15 @@ export default function BookingForm({
   }
 
   return (
-    <div className="rounded-[2rem] border border-sage/15 bg-white p-8 shadow-[0_24px_80px_rgba(26,46,26,0.08)] md:p-10">
-      <div className="flex flex-col gap-3 border-b border-sage/15 pb-6">
-        <p className="text-sm uppercase tracking-[0.28em] text-moss">Booking form</p>
-        <h2 className="font-display text-3xl text-forest md:text-4xl">
-          Reserve your session
-        </h2>
-        <p className="max-w-2xl text-base leading-7 text-charcoal/70">
-          Fill in the essentials and we&apos;ll receive your request directly by email.
-          After that, you can jump into WhatsApp for a faster reply.
-        </p>
-      </div>
+<div className="rounded-[2rem] border border-sage/15 bg-white p-8 shadow-[0_24px_80px_rgba(26,46,26,0.08)] md:p-10">
+  <div className="flex flex-col gap-3 border-b border-sage/15 pb-6 text-center md:text-left">
+    <p className="text-sm uppercase tracking-[0.28em] text-moss">
+      Booking form
+    </p>
+    <h2 className="font-display text-2xl text-forest md:text-4xl">
+      Reserve your session
+    </h2>
+  </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
         <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
@@ -409,11 +407,6 @@ export default function BookingForm({
           }
         />
 
-        <div className="rounded-[1.5rem] border border-sage/15 bg-moss/5 p-5 text-sm leading-6 text-charcoal/70">
-          Submitting this form sends your request by email. For the fastest follow-up,
-          you can also continue on WhatsApp after submitting.
-        </div>
-
         {status !== 'idle' ? (
           <div
             className={`rounded-[1.5rem] border px-5 py-4 text-sm leading-6 ${
@@ -469,14 +462,6 @@ export default function BookingForm({
             </a>
           </Button>
         </div>
-
-        <p className="text-xs leading-6 text-charcoal/50">
-          Need to compare treatments first? Visit the{' '}
-          <Link href="/#services" className="font-medium text-moss hover:text-forest">
-            homepage service details
-          </Link>{' '}
-          to review every session before booking.
-        </p>
       </form>
     </div>
   );
