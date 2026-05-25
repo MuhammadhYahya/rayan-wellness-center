@@ -20,7 +20,7 @@ export default function Footer() {
 
             <div className="mt-8 flex gap-4">
               <a
-                href="https://www.facebook.com/people/Rayan-Vidumina"
+                href="https://www.facebook.com/share/1FfTLPn4Zj/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:scale-110 hover:bg-white/20"
@@ -129,7 +129,7 @@ export default function Footer() {
 
         <div className="mt-16 border-t border-sage/20 pt-8 text-center text-xs text-sage/60">
           Copyright {new Date().getFullYear()} Rayan&apos;s Recovery & Wellness Center |
-          Matugama, Sri Lanka
+          Keeranthidiya, Sri Lanka
         </div>
       </div>
     </footer>

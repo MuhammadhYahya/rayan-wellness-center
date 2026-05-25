@@ -71,8 +71,8 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
               <div className="rounded-3xl bg-white p-8 shadow-sm">
                 <p className="text-sm uppercase tracking-widest text-moss mb-4">Working Hours</p>
                 <p className="text-charcoal/80">
-                  Monday – Saturday<br />
-                  8:00 AM – 6:00 PM
+                  Monday – Sunday<br />
+                  9:00 AM – 7:00 PM
                 </p>
                 <p className="mt-6 text-xs text-charcoal/60">
                   We usually reply within a few hours during working hours.

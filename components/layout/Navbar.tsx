@@ -41,9 +41,16 @@ export default function Navbar() {
         isScrolled ? 'bg-forest/95 shadow-lg backdrop-blur-md' : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <Logo />
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:py-5">
+        {/* Left spacer for mobile balance */}
+        <div className="w-10 md:hidden" />
 
+        {/* Centered Logo on Mobile */}
+        <div className="flex justify-center md:justify-start">
+          <Logo />
+        </div>
+
+        {/* Desktop Navigation */}
         <div className="hidden md:block">
           <NavigationMenu>
             <NavigationMenuList className="gap-8">
@@ -61,6 +68,7 @@ export default function Navbar() {
           </NavigationMenu>
         </div>
 
+        {/* Desktop CTA Button */}
         <div className="hidden md:block">
           <Button
             asChild
@@ -70,6 +78,7 @@ export default function Navbar() {
           </Button>
         </div>
 
+        {/* Mobile Menu Button - Right side */}
         <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
           <SheetTrigger asChild>
             <Button

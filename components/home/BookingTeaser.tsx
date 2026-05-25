@@ -50,7 +50,7 @@ export default function BookingTeaser() {
         </div>
 
         <p className="text-sage/70 text-sm mt-8">
-          Sessions available Monday to Saturday • Matugama, Sri Lanka
+          Sessions available Monday to Sunday • Keeranthidiya, Sri Lanka
         </p>
       </div>
 
