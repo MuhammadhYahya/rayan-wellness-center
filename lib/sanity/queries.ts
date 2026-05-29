@@ -47,7 +47,16 @@ const approvedReviewsQuery = `*[_type == "review" && status == "approved"] | ord
 
 export async function getServices(): Promise<Service[]> {
   const client = getSanityClient();
-  const services = await client.fetch<Service[]>(servicesQuery);
+
+  const services = await client.fetch<Service[]>(
+    servicesQuery,
+    {},                    // params
+    { 
+      cache: 'no-store',   // ← Force fresh data on every request
+      // OR use ISR (recommended for production):
+      // next: { revalidate: 60 }   // Revalidate every 60 seconds
+    }
+  );
 
   return services.map((service) => ({
     ...service,

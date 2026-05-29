@@ -181,8 +181,9 @@ export default function BookingForm({
         },
         body: JSON.stringify({
           access_key: accessKey,
-          subject: `New booking request from ${formState.fullName}`,
+          subject: `New Booking Request – ${formState.fullName}`,
           from_name: 'Rayan Wellness Website',
+          replyto: formState.email || 'rayanrecoverycenter7@gmail.com',
           fullName: formState.fullName,
           phone: formState.phone,
           email: formState.email || 'Not provided',
@@ -190,7 +191,6 @@ export default function BookingForm({
           preferredDate: formState.preferredDate,
           preferredTime: formState.preferredTime,
           message: formState.message,
-          botcheck: '',
         }),
       });
 
@@ -222,18 +222,17 @@ export default function BookingForm({
   }
 
   return (
-<div className="rounded-[2rem] border border-sage/15 bg-white p-8 shadow-[0_24px_80px_rgba(26,46,26,0.08)] md:p-10">
-  <div className="flex flex-col gap-3 border-b border-sage/15 pb-6 text-center md:text-left">
-    <p className="text-sm uppercase tracking-[0.28em] text-moss">
-      Booking form
-    </p>
-    <h2 className="font-display text-2xl text-forest md:text-4xl">
-      Reserve your session
-    </h2>
-  </div>
+    <div className="rounded-[2rem] border border-sage/15 bg-white p-8 shadow-[0_24px_80px_rgba(26,46,26,0.08)] md:p-10">
+      <div className="flex flex-col gap-3 border-b border-sage/15 pb-6 text-center md:text-left">
+        <p className="text-sm uppercase tracking-[0.28em] text-moss">
+          Booking form
+        </p>
+        <h2 className="font-display text-2xl text-forest md:text-4xl">
+          Reserve your session
+        </h2>
+      </div>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-        <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
 
         {selectedServiceDetails ? (
           <div className="overflow-hidden rounded-[1.75rem] border border-sage/15 bg-ivory">
@@ -409,11 +408,10 @@ export default function BookingForm({
 
         {status !== 'idle' ? (
           <div
-            className={`rounded-[1.5rem] border px-5 py-4 text-sm leading-6 ${
-              status === 'success'
+            className={`rounded-[1.5rem] border px-5 py-4 text-sm leading-6 ${status === 'success'
                 ? 'border-moss/20 bg-moss/10 text-forest'
                 : 'border-red-200 bg-red-50 text-red-700'
-            }`}
+              }`}
           >
             <div className="flex items-start gap-3">
               {status === 'success' ? (
