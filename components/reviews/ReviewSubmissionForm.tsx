@@ -1,10 +1,13 @@
 'use client';
 
-import { useActionState, useState } from 'react';
-import { CheckCircle2, LoaderCircle, Send, ShieldCheck, Star } from 'lucide-react';
+import { useState } from 'react';
+import { CheckCircle2, ImagePlus, LoaderCircle, Send, ShieldCheck, Star } from 'lucide-react';
 
-import { submitReview, type ReviewSubmissionState } from '@/app/reviews/actions';
 import { Button } from '@/components/ui/button';
+import {
+  REVIEW_SUBMISSION_INITIAL_STATE,
+  type ReviewSubmissionState,
+} from '@/lib/reviews/submissionState';
 import type { Service } from '@/lib/sanity/types';
 
 type ReviewSubmissionFormProps = {
@@ -12,16 +15,12 @@ type ReviewSubmissionFormProps = {
   isSubmissionEnabled: boolean;
 };
 
-const INITIAL_STATE: ReviewSubmissionState = {
-  status: 'idle',
-  message: '',
-};
-
 export default function ReviewSubmissionForm({
   services,
   isSubmissionEnabled,
 }: ReviewSubmissionFormProps) {
-  const [state, formAction, isPending] = useActionState(submitReview, INITIAL_STATE);
+  const [state, setState] = useState<ReviewSubmissionState>(REVIEW_SUBMISSION_INITIAL_STATE);
+  const [isPending, setIsPending] = useState(false);
   const [rating, setRating] = useState(5);
 
   return (
@@ -45,10 +44,38 @@ export default function ReviewSubmissionForm({
       ) : null}
 
       <form
-        action={isSubmissionEnabled ? formAction : undefined}
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           if (!isSubmissionEnabled) {
             event.preventDefault();
+            return;
+          }
+
+          event.preventDefault();
+          setIsPending(true);
+
+          const form = event.currentTarget;
+          const formData = new FormData(form);
+
+          try {
+            const response = await fetch('/api/reviews', {
+              method: 'POST',
+              body: formData,
+            });
+
+            const result = (await response.json()) as ReviewSubmissionState;
+            setState(result);
+
+            if (result.status === 'success') {
+              form.reset();
+              setRating(5);
+            }
+          } catch {
+            setState({
+              status: 'error',
+              message: 'Something went wrong while submitting your review.',
+            });
+          } finally {
+            setIsPending(false);
           }
         }}
         className="mt-8 space-y-6"
@@ -191,6 +218,33 @@ export default function ReviewSubmissionForm({
               className="w-full rounded-[1.5rem] border border-sage/20 bg-ivory px-4 py-4 text-base text-forest outline-none transition placeholder:text-charcoal/35 focus:border-moss"
               placeholder="What stood out about your experience, recovery, or results?"
             />
+          }
+        />
+
+        <Field
+          label="Photo"
+          htmlFor="image"
+          error={state.fieldErrors?.image}
+          input={
+            <div className="rounded-[1.5rem] border border-dashed border-sage/25 bg-ivory px-4 py-5">
+              <div className="flex flex-col gap-2 text-sm text-charcoal/70">
+                <span className="flex items-center gap-2 font-medium text-forest">
+                  <ImagePlus className="h-4 w-4 text-moss" />
+                  Add one optional photo
+                </span>
+                <span>
+                  Share a single image from your visit if you would like. JPG, PNG,
+                  GIF, or WebP up to 5 MB.
+                </span>
+                <input
+                  id="image"
+                  name="image"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  className="mt-2 block w-full cursor-pointer rounded-2xl border border-sage/20 bg-white px-4 py-3 text-sm text-charcoal/70 file:mr-4 file:rounded-full file:border-0 file:bg-forest file:px-4 file:py-2 file:text-sm file:font-medium file:text-ivory hover:file:bg-forest/90"
+                />
+              </div>
+            </div>
           }
         />
 
