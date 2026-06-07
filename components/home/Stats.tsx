@@ -31,7 +31,7 @@ export default function Stats() {
           {/* Stat 2 */}
           <div className="flex-1">
             <div className="text-4xl sm:text-5xl md:text-6xl font-semibold text-ivory mb-2">
-              {inView && <CountUp start={0} end={15} duration={2.5} />}+
+              {inView && <CountUp start={0} end={10} duration={2.5} />}+
             </div>
             <p className="text-sage text-[10px] sm:text-xs uppercase tracking-widest leading-tight">
               Professional<br />Certifications

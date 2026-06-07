@@ -61,13 +61,13 @@ export default function Hero() {
           </Button>
         </div>
 
-        <div className="mt-16 flex items-center justify-center gap-8 text-sm text-ivory/70">
+        {/* <div className="mt-16 flex items-center justify-center gap-8 text-sm text-ivory/70">
           <div>22 Years Navy Discipline</div>
           <div className="h-4 w-px bg-white/30" />
           <div>15+ Certifications</div>
           <div className="h-4 w-px bg-white/30" />
           <div>Nature-Based Healing</div>
-        </div>
+        </div> */}
       </div>
 
       <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-ivory/60">
