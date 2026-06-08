@@ -146,7 +146,7 @@ export async function submitReviewFormData(
     return {
       status: 'success',
       message:
-        'Thank you for sharing your experience. Your review has been received and will appear after approval.',
+        'Thank you for sharing your experience. Your review has been received.',
     };
   } catch (error) {
     return {
