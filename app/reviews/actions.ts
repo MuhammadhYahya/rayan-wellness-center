@@ -5,7 +5,7 @@ import {
   submitReviewFormData,
 } from '@/lib/reviews/submitReview';
 
-export type { ReviewSubmissionState } from '@/lib/reviews/submissionState';
+import type { ReviewSubmissionState } from '@/lib/reviews/submissionState';
 
 export const INITIAL_STATE: ReviewSubmissionState = REVIEW_SUBMISSION_INITIAL_STATE;
 

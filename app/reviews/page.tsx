@@ -154,13 +154,6 @@ export default async function ReviewsPage({ searchParams }: ReviewsPageProps) {
   </div>
 </section>
 
-      {/* Submission Form */}
-      <section className="px-5 pb-20">
-        <div className="mx-auto max-w-3xl">
-          <ReviewSubmissionForm services={services} isSubmissionEnabled={isReviewSubmissionEnabled} />
-        </div>
-      </section>
-
       <Footer />
     </main>
   );
