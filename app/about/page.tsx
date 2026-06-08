@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, MapPin } from 'lucide-react';
+import CertificatesCarousel from './CertificatesCarousel';
 
 import Footer from '@/components/layout/Footer';
 
@@ -59,16 +60,16 @@ export default function AboutPage() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-2 gap-8 border-t border-sage/20 pt-8">
+              {/* <div className="grid grid-cols-2 gap-8 border-t border-sage/20 pt-8">
                 <div>
-                  <div className="text-5xl font-semibold text-forest">15+</div>
+                  <div className="text-5xl font-semibold text-forest">10+</div>
                   <p className="text-sm text-charcoal/70 mt-1">Professional Certifications</p>
                 </div>
                 <div>
                   <div className="text-5xl font-semibold text-forest">8+</div>
                   <p className="text-sm text-charcoal/70 mt-1">Healing Therapies</p>
                 </div>
-              </div>
+              </div> */}
 
               {/* Quote */}
               <div className="italic border-l-4 border-moss pl-6 text-charcoal/80">
@@ -99,6 +100,16 @@ export default function AboutPage() {
             a performance and recovery perspective. His approach is rooted in respect, precision, 
             and genuine care for each individual&apos;s wellness journey.
           </p>
+        </div>
+      </section>
+
+      {/* Certificates Carousel */}
+      <section className="px-5 py-16 md:py-20">
+        <div className="mx-auto max-w-5xl">
+          <h3 className="font-display text-3xl md:text-4xl text-forest text-center mb-10">
+            Certifications & Expertise
+          </h3>
+          <CertificatesCarousel />
         </div>
       </section>
 

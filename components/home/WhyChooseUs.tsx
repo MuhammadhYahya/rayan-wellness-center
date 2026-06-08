@@ -11,7 +11,7 @@ const pillars = [
   {
     icon: Award,
     title: "Multi-Certified Expertise",
-    desc: "15+ professional certifications in Sports Massage, Thai Massage, Abhyanga, Yoga and more.",
+    desc: "10+ professional certifications in Sports Massage, Thai Massage, Abhyanga, Yoga and more.",
     color: "text-forest"
   },
   {

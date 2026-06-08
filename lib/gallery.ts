@@ -30,4 +30,19 @@ export const galleryImages: GalleryItem[] = [
     alt: 'Wellness aromatherapy setup with calming details',
     category: 'Wellness',
   },
+  {
+    src: '/assets/images/gallery/g-06.jpeg',
+    alt: 'Close-up of hands performing a massage technique',
+    category: 'Massage',
+  },
+  {
+    src: '/assets/images/gallery/g-07.png',
+    alt: 'Serene meditation corner with cushions and plants',
+    category: 'The Space',
+  },
+  {
+    src: '/assets/images/gallery/g-08.png',
+    alt: 'Group yoga session in a lush outdoor setting',
+    category: 'Yoga',
+  },
 ];
