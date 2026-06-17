@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from '@/components/layout/Navbar';
 import SocialSidebar from "@/components/layout/SocialSidebar";
+import { Analytics } from '@vercel/analytics/next';
 export const metadata: Metadata = {
   title: "Rayan's Recovery & Wellness Center",
   description: "Holistic recovery, massage therapy, yoga, and wellness services in Keeranthidiya, Sri Lanka.",
@@ -17,7 +18,7 @@ export default function RootLayout({
       lang="en"
       className="h-full antialiased"
     >
-      <body className="min-h-full flex flex-col"><Navbar /><SocialSidebar />{children}</body>
+      <body className="min-h-full flex flex-col"><Navbar /><SocialSidebar />{children}<Analytics /></body>
     </html>
   );
 }
