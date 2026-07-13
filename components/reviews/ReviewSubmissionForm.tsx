@@ -22,6 +22,7 @@ export default function ReviewSubmissionForm({
   const [state, setState] = useState<ReviewSubmissionState>(REVIEW_SUBMISSION_INITIAL_STATE);
   const [isPending, setIsPending] = useState(false);
   const [rating, setRating] = useState(5);
+  const [formRenderedAt] = useState(() => Date.now());
 
   return (
     <div className="rounded-[2rem] border border-sage/15 bg-white p-8 shadow-[0_24px_80px_rgba(26,46,26,0.08)] md:p-10">
@@ -55,6 +56,7 @@ export default function ReviewSubmissionForm({
 
           const form = event.currentTarget;
           const formData = new FormData(form);
+          formData.set('formRenderedAt', String(formRenderedAt));
 
           try {
             const response = await fetch('/api/reviews', {

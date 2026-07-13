@@ -44,6 +44,9 @@ const featuredReviewsQuery = `*[_type == "review" && status == "approved" && fea
 const approvedReviewsQuery = `*[_type == "review" && status == "approved"] | order(approvedAt desc, submittedAt desc, name asc) {
   ${reviewFields}
 }`;
+const latestApprovedReviewsQuery = `*[_type == "review" && status == "approved"] | order(approvedAt desc, submittedAt desc) [0...8] {
+  ${reviewFields}
+}`;
 
 export async function getServices(): Promise<Service[]> {
   const client = getSanityClient();
@@ -80,7 +83,13 @@ export async function getFeaturedReviews(): Promise<Review[]> {
   const client = getSanityClient();
   const reviews = await client.fetch<Review[]>(featuredReviewsQuery);
 
+  if (reviews.length > 0) {
   return reviews.map(mapReview);
+}
+
+const fallbackReviews = await client.fetch<Review[]>(latestApprovedReviewsQuery);
+
+return fallbackReviews.map(mapReview);
 }
 
 export async function getApprovedReviews(): Promise<Review[]> {
