@@ -42,7 +42,7 @@ export default function AboutPage() {
             <div className="space-y-8">
               <div>
                 <h2 className="font-display text-4xl md:text-5xl text-forest mb-2">
-                  Rayan Jayamanna
+                  Rayan Vidumina Jayamanna
                 </h2>
                 <p className="text-moss font-medium">Founder & Lead Therapist</p>
               </div>
@@ -59,22 +59,10 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              {/* Stats */}
-              {/* <div className="grid grid-cols-2 gap-8 border-t border-sage/20 pt-8">
-                <div>
-                  <div className="text-5xl font-semibold text-forest">10+</div>
-                  <p className="text-sm text-charcoal/70 mt-1">Professional Certifications</p>
-                </div>
-                <div>
-                  <div className="text-5xl font-semibold text-forest">8+</div>
-                  <p className="text-sm text-charcoal/70 mt-1">Healing Therapies</p>
-                </div>
-              </div> */}
-
               {/* Quote */}
               <div className="italic border-l-4 border-moss pl-6 text-charcoal/80">
                 “Discipline, compassion, and deep knowledge are the pillars I bring from my military service into every healing session.”
-                <p className="mt-4 text-sm text-moss">- Rayan Jayamanna</p>
+                <p className="mt-4 text-sm text-moss">- Rayan Vidumina Jayamanna</p>
               </div>
 
               <Link
