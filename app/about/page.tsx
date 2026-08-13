@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, MapPin } from 'lucide-react';
+import { ArrowLeft, MapPin, Target, Eye } from 'lucide-react';
 import CertificatesCarousel from './CertificatesCarousel';
 
 import Footer from '@/components/layout/Footer';
@@ -30,7 +30,7 @@ export default function AboutPage() {
             <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-xl lg:aspect-square">
               <Image
                 src="/assets/images/rayan-portrait.jpeg"
-                alt="Rayan Jayamanna"
+                alt="Rayan Vidumina Jayamanna"
                 fill
                 className="object-cover"
                 priority
@@ -62,7 +62,7 @@ export default function AboutPage() {
               {/* Quote */}
               <div className="italic border-l-4 border-moss pl-6 text-charcoal/80">
                 “Discipline, compassion, and deep knowledge are the pillars I bring from my military service into every healing session.”
-                <p className="mt-4 text-sm text-moss">- Rayan Vidumina Jayamanna</p>
+                <p className="mt-4 text-sm text-moss">— Rayan Vidumina Jayamanna</p>
               </div>
 
               <Link
@@ -77,22 +77,48 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Philosophy Section */}
+      {/* Mission & Vision Section */}
       <section className="bg-sage/5 py-16 md:py-20">
-        <div className="mx-auto max-w-3xl px-5 text-center">
-          <h3 className="font-display text-3xl md:text-4xl text-forest mb-6">
-            A Journey of Service and Healing
-          </h3>
-          <p className="text-lg leading-relaxed text-charcoal/75">
-            Rayan&apos;s unique background allows him to understand the human body from both 
-            a performance and recovery perspective. His approach is rooted in respect, precision, 
-            and genuine care for each individual&apos;s wellness journey.
-          </p>
+        <div className="mx-auto max-w-6xl px-5">
+          <div className="text-center mb-12">
+            <p className="text-sm uppercase tracking-[0.3em] text-moss mb-3">Our Purpose</p>
+            <h3 className="font-display text-3xl md:text-4xl text-forest">
+              Mission & Vision
+            </h3>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            {/* Mission Card */}
+            <div className="rounded-3xl bg-white p-8 md:p-10 shadow-sm border border-sage/10">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-moss/10 flex items-center justify-center">
+                  <Target className="h-6 w-6 text-moss" />
+                </div>
+                <h4 className="text-2xl font-semibold text-forest">Our Mission</h4>
+              </div>
+              <p className="text-charcoal/80 leading-relaxed text-[15px] md:text-base">
+                Our mission is to promote holistic health and well-being through professional massage therapy, yoga, fitness, and wellness practices. We are committed to helping every individual improve physical health, reduce stress, enhance mobility, and achieve a balanced, healthier lifestyle through safe, personalized, and evidence-informed wellness services.
+              </p>
+            </div>
+
+            {/* Vision Card */}
+            <div className="rounded-3xl bg-white p-8 md:p-10 shadow-sm border border-sage/10">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 rounded-2xl bg-moss/10 flex items-center justify-center">
+                  <Eye className="h-6 w-6 text-moss" />
+                </div>
+                <h4 className="text-2xl font-semibold text-forest">Our Vision</h4>
+              </div>
+              <p className="text-charcoal/80 leading-relaxed text-[15px] md:text-base">
+                To become a trusted wellness sanctuary in Sri Lanka where discipline meets compassion — a place where every person can experience lasting recovery, renewed energy, and deep inner balance through authentic, personalized healing practices rooted in nature and professional expertise.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Certificates Carousel */}
-      <section className="px-5 py-16 md:py-20">
+      <section className="px-5 py-16 md:py-20 bg-sage/5">
         <div className="mx-auto max-w-5xl">
           <h3 className="font-display text-3xl md:text-4xl text-forest text-center mb-10">
             Certifications & Expertise
@@ -101,38 +127,38 @@ export default function AboutPage() {
         </div>
       </section>
 
-  {/* Location Section */}
-<section className="px-5 py-16 md:py-20">
-  <div className="mx-auto max-w-5xl">
-    <div className="text-center mb-10">
-      <p className="uppercase tracking-widest text-sm text-moss mb-2">Visit Us</p>
-      <h3 className="font-display text-3xl md:text-4xl text-forest">
-        Our Healing Space
-      </h3>
-      <p className="mt-3 text-charcoal/70">
-        Keeranthidiya, Matugama, Sri Lanka
-      </p>
-    </div>
+      {/* Location Section */}
+      <section className="px-5 py-16 md:py-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center mb-10">
+            <p className="uppercase tracking-widest text-sm text-moss mb-2">Visit Us</p>
+            <h3 className="font-display text-3xl md:text-4xl text-forest">
+              Our Healing Space
+            </h3>
+            <p className="mt-3 text-charcoal/70">
+              Keeranthidiya, Matugama, Sri Lanka
+            </p>
+          </div>
 
-    <div className="overflow-hidden rounded-[2rem] border border-sage/15 shadow-sm bg-white">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3964.3612922007496!2d80.059968!3d6.47584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMjgnMzMuMCJOIDgwwrAwMyczNS45IkU!5e0!3m2!1sen!2slk!4v1779545711805!5m2!1sen!2slk"
-        width="100%"
-        height="460"
-        className="w-full border-0"
-        style={{ minHeight: '380px' }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-      />
-      
-      <div className="flex items-center justify-center gap-3 bg-white py-5 text-sm text-charcoal/70 border-t border-sage/10">
-        <MapPin className="h-4 w-4 text-moss" />
-        <span>Keeranthidiya, Matugama, Sri Lanka</span>
-      </div>
-    </div>
-  </div>
-</section>
+          <div className="overflow-hidden rounded-[2rem] border border-sage/15 shadow-sm bg-white">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3964.3612922007496!2d80.059968!3d6.47584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMjgnMzMuMCJOIDgwwrAwMyczNS45IkU!5e0!3m2!1sen!2slk!4v1779545711805!5m2!1sen!2slk"
+              width="100%"
+              height="460"
+              className="w-full border-0"
+              style={{ minHeight: '380px' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            
+            <div className="flex items-center justify-center gap-3 bg-white py-5 text-sm text-charcoal/70 border-t border-sage/10">
+              <MapPin className="h-4 w-4 text-moss" />
+              <span>Keeranthidiya, Matugama, Sri Lanka</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </main>
