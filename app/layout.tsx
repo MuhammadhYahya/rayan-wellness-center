@@ -4,8 +4,12 @@ import Navbar from '@/components/layout/Navbar';
 import SocialSidebar from "@/components/layout/SocialSidebar";
 // import { Analytics } from '@vercel/analytics/next';
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.rayanwellness.com"),
   title: "Rayan's Recovery & Wellness Center",
   description: "Holistic recovery, massage therapy, yoga, and wellness services in Keeranthidiya, Sri Lanka.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({

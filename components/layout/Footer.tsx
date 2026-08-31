@@ -83,10 +83,12 @@ export default function Footer() {
             <div className="space-y-3 text-sm">
               <p>Sports Massage</p>
               <p>Deep Tissue Massage</p>
-              <p>Thai Massage</p>
+              <p>Thai Traditional Massage</p>
               <p>Indian Abhyanga</p>
               <p>Reflexology</p>
               <p>Hatha Yoga</p>
+              <p>Hot Stone Massage</p>
+              <p>Hawaiian Lomi Lomi</p>
             </div>
           </div>
 
