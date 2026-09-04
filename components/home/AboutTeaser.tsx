@@ -42,8 +42,8 @@ export default function AboutTeaser() {
               </p>
               <p>
                 A certified Massage Therapist and Yoga Instructor, he combines sports
-                science, military-grade attention to detail, and ancient Ayurvedic
-                wisdom to deliver transformative wellness experiences.
+                science, military-grade attention to detail, and certified Thai massage
+                techniques to deliver transformative wellness experiences.
               </p>
             </div>
 

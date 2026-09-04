@@ -1,8 +1,15 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CalendarDays, Sparkles, BadgeCheck } from 'lucide-react';
 
 import Footer from '@/components/layout/Footer';
 import { getServices } from '@/lib/sanity/queries';
+
+export const metadata: Metadata = {
+  title: 'Massage & Yoga Services',
+  description:
+    'Sports massage, deep tissue, hot stone, Thai massage therapy, Hawaiian Lomi Lomi, reflexology and Hatha yoga in Matugama, Sri Lanka. Book your session today.',
+};
 
 export default async function ServicesPage() {
   const services = await getServices();

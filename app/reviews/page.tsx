@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, CalendarDays, MessageCircle, Star } from 'lucide-react';
@@ -7,6 +8,12 @@ import ReviewSubmissionForm from '@/components/reviews/ReviewSubmissionForm';
 import ReviewsFilter from '@/components/reviews/ReviewsFilter';
 import { getApprovedReviews, getServices } from '@/lib/sanity/queries';
 import { hasSanityWriteToken } from '@/lib/sanity/client';
+
+export const metadata: Metadata = {
+  title: 'Client Reviews & Testimonials',
+  description:
+    'Read real stories from clients who experienced massage therapy, sports recovery and yoga sessions at Rayan\'s Recovery & Wellness Center in Matugama, Sri Lanka.',
+};
 
 type ReviewsPageProps = {
   searchParams?: Promise<{ service?: string }>;

@@ -1,6 +1,13 @@
+import type { Metadata } from 'next';
 import Footer from '@/components/layout/Footer';
 import GalleryGrid from '@/components/gallery/GalleryGrid';
 import { galleryImages } from '@/lib/gallery';
+
+export const metadata: Metadata = {
+  title: 'Photo Gallery',
+  description:
+    'See our peaceful treatment spaces and healing sessions in Keeranthidiya, Matugama. Get a feel for what to expect before you book your massage or yoga session.',
+};
 
 export default function GalleryPage() {
   return (

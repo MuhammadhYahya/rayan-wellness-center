@@ -12,7 +12,6 @@ export type ServiceIconKey =
   | 'deep-tissue'
   | 'thai-massage'
   | 'swedish-massage'
-  | 'abhyanga'
   | 'reflexology'
   | 'sport-stretching'
   | 'hatha-yoga';

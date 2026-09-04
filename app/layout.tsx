@@ -5,8 +5,12 @@ import SocialSidebar from "@/components/layout/SocialSidebar";
 // import { Analytics } from '@vercel/analytics/next';
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.rayanwellness.com"),
-  title: "Rayan's Recovery & Wellness Center",
-  description: "Holistic recovery, massage therapy, yoga, and wellness services in Keeranthidiya, Sri Lanka.",
+  title: {
+    default: "Massage, Yoga & Recovery Therapy in Matugama, Sri Lanka",
+    template: "%s | Rayan's Recovery & Wellness Center",
+  },
+  description:
+    "Sports massage, deep tissue, Thai massage therapy and hot stone treatments plus yoga in Keeranthidiya, Matugama. Personalized recovery sessions — book via WhatsApp.",
   alternates: {
     canonical: "/",
   },

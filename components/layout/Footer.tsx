@@ -14,7 +14,7 @@ export default function Footer() {
             <Logo />
 
             <p className="mt-6 max-w-md text-sage/80">
-              Expert healing through sports massage, Ayurvedic therapies, and Hatha Yoga
+              Expert healing through sports massage, Thai massage therapy, and Hatha Yoga
               with military precision and compassionate care.
             </p>
 
@@ -84,7 +84,6 @@ export default function Footer() {
               <p>Sports Massage</p>
               <p>Deep Tissue Massage</p>
               <p>Thai Traditional Massage</p>
-              <p>Indian Abhyanga</p>
               <p>Reflexology</p>
               <p>Hatha Yoga</p>
               <p>Hot Stone Massage</p>

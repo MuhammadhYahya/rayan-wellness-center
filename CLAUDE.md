@@ -10,8 +10,8 @@ SEO or website work here so you don't need to be re-briefed each month.
 
 - **Developer & SEO provider:** Yahya (built this Next.js site; also running the client's SEO).
 - **Client contact:** Rayan Vidumina Jayamanna, owner.
-- **Business:** Sports massage, deep tissue, hot stone, Swedish, Thai traditional, Hawaiian
-  Lomi Lomi, Ayurvedic treatments, reflexology, and Hatha yoga. Target audience: athletes
+- **Business:** Sports massage, deep tissue, hot stone, Swedish, Thai massage therapy, Hawaiian
+  Lomi Lomi, reflexology, and Hatha yoga. Target audience: athletes
   needing recovery, people with muscle tension, wellness/holistic-health seekers, local to
   Keeranthidiya / Sri Lanka.
 - **SEO contract:** LKR 10,000/month, first 3 months = September, October, November 2026.
@@ -50,15 +50,22 @@ Done before the paid engagement (free, since Yahya built the site):
 Fixed so far (during the paid engagement):
 - Added `metadataBase` + `alternates.canonical` to `app/layout.tsx`.
 - Added a host-based redirect in `next.config.ts` sending `rayanwellness.com` →
-  `https://www.rayanwellness.com`. Still needs: deploy this change (or set the same redirect
-  in Vercel's Domains dashboard for an instant fix with no rebuild), then verify
-  `http://rayanwellness.com` actually lands on the canonical URL.
+  `https://www.rayanwellness.com`. **Deployed and confirmed working** (Yahya tested all
+  address variants in his own browser, Aug 2026) — DONE, no need to redo. Search Console's
+  "Page with redirect" entries should clear over the following weeks as Google re-crawls;
+  worth a quick check in a few weeks but not an active task.
 - Google Analytics (GA4) is NOT set up yet — `@vercel/analytics/next` import in
   `layout.tsx` is commented out. This is a planned Month 1 task.
+- **Unique per-page titles/descriptions — DONE.** `app/layout.tsx` now uses a
+  `title.default` + `title.template` pattern ("%s | Rayan's Recovery & Wellness Center").
+  Each page (`services`, `about`, `gallery`, `reviews`, `contact`) exports its own
+  `metadata` with a page-specific title/description built around real page content and
+  the target keywords (massage, yoga, Thai massage, Matugama/Keeranthidiya, Sri Lanka). Needs
+  deploy to go live, then re-check in Search Console after Google re-crawls.
 
-Not started yet: unique per-page titles/meta descriptions, keyword research, basic
-speed/mobile check, Google Business Profile setup, local directory listings, backlinks,
-content pieces.
+Not started yet: keyword research (beyond what informed the titles above), basic
+speed/mobile check, GA4 setup, Google Business Profile setup, local directory listings,
+backlinks, content pieces.
 
 ## Monthly plan (from the proposal)
 

@@ -1,9 +1,16 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, MapPin, Target, Eye } from 'lucide-react';
 import CertificatesCarousel from './CertificatesCarousel';
 
 import Footer from '@/components/layout/Footer';
+
+export const metadata: Metadata = {
+  title: 'About Our Wellness Center & Founder',
+  description:
+    'Meet Rayan Vidumina Jayamanna, a certified massage therapist and yoga instructor bringing 22 years of discipline and professional massage expertise to Matugama, Sri Lanka.',
+};
 
 export default function AboutPage() {
   return (
@@ -54,7 +61,7 @@ export default function AboutPage() {
                 </p>
                 <p>
                   A certified Massage Therapist and Yoga Instructor, he brings together sports science, 
-                  military-grade attention to detail, and ancient Ayurvedic wisdom to create truly 
+                  military-grade attention to detail, and certified Thai massage techniques to create truly 
                   transformative wellness experiences.
                 </p>
               </div>

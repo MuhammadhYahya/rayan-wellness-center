@@ -1,9 +1,16 @@
 // import Link from 'next/link';
+import type { Metadata } from 'next';
 import { CalendarDays, Clock3, MessageCircle } from 'lucide-react';
 
 import BookingForm from '@/components/contact/BookingForm';
 import Footer from '@/components/layout/Footer';
 import { getServices } from '@/lib/sanity/queries';
+
+export const metadata: Metadata = {
+  title: 'Book a Session',
+  description:
+    'Book your massage, yoga or wellness session in Matugama, Sri Lanka via WhatsApp or phone. Open Monday-Sunday, 9 AM-7 PM. We reply within a few hours.',
+};
 
 type ContactPageProps = {
   searchParams?: Promise<{ service?: string }>;
