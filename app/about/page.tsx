@@ -5,6 +5,8 @@ import { ArrowLeft, MapPin, Target, Eye } from 'lucide-react';
 import CertificatesCarousel from './CertificatesCarousel';
 
 import Footer from '@/components/layout/Footer';
+import { fallbackCertificates, type CertificateItem } from '@/lib/certificates';
+import { getCertificates } from '@/lib/sanity/queries';
 
 export const metadata: Metadata = {
   title: 'About Our Wellness Center & Founder',
@@ -12,7 +14,27 @@ export const metadata: Metadata = {
     'Meet Rayan Vidumina Jayamanna, a certified massage therapist and yoga instructor bringing 22 years of discipline and professional massage expertise to Matugama, Sri Lanka.',
 };
 
-export default function AboutPage() {
+async function loadCertificates(): Promise<CertificateItem[]> {
+  try {
+    const certificates = await getCertificates();
+    const items = certificates
+      .filter((certificate) => certificate.imageUrl)
+      .map((certificate) => ({
+        id: certificate._id,
+        title: certificate.title,
+        image: certificate.imageUrl as string,
+      }));
+
+    return items.length > 0 ? items : fallbackCertificates;
+  } catch (error) {
+    console.error('Failed to load certificates from Sanity:', error);
+    return fallbackCertificates;
+  }
+}
+
+export default async function AboutPage() {
+  const certificates = await loadCertificates();
+
   return (
     <main className="min-h-screen bg-ivory">
       {/* Hero */}
@@ -130,7 +152,7 @@ export default function AboutPage() {
           <h3 className="font-display text-3xl md:text-4xl text-forest text-center mb-10">
             Certifications & Expertise
           </h3>
-          <CertificatesCarousel />
+          <CertificatesCarousel certificates={certificates} />
         </div>
       </section>
 

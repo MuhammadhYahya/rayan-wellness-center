@@ -54,3 +54,11 @@ export type Review = {
     slug?: string;
   };
 };
+
+export type Certificate = {
+  _id: string;
+  title: string;
+  order?: number;
+  image?: SanityImageSource;
+  imageUrl?: string;
+};

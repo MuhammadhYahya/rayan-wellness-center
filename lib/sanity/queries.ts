@@ -2,7 +2,14 @@ import 'server-only';
 
 import { getSanityClient } from '@/lib/sanity/client';
 import { urlForImage } from '@/lib/sanity/image';
-import type { Review, Service } from '@/lib/sanity/types';
+import type { Certificate, Review, Service } from '@/lib/sanity/types';
+
+const certificatesQuery = `*[_type == "certificate" && defined(image.asset)] | order(order asc, _createdAt asc) {
+  _id,
+  title,
+  order,
+  image
+}`;
 
 const servicesQuery = `*[_type == "service"] | order(order asc, title asc) {
   _id,
@@ -97,4 +104,20 @@ export async function getApprovedReviews(): Promise<Review[]> {
   const reviews = await client.fetch<Review[]>(approvedReviewsQuery);
 
   return reviews.map(mapReview);
+}
+
+export async function getCertificates(): Promise<Certificate[]> {
+  const client = getSanityClient();
+  const certificates = await client.fetch<Certificate[]>(
+    certificatesQuery,
+    {},
+    { cache: 'no-store' }
+  );
+
+  return certificates.map((certificate) => ({
+    ...certificate,
+    imageUrl: certificate.image
+      ? urlForImage(certificate.image).width(1600).fit('max').url()
+      : undefined,
+  }));
 }
