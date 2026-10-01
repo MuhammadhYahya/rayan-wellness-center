@@ -10,6 +10,7 @@
     "check:sanity-config": "node scripts/check-sanity-config.mjs"
   },
   "dependencies": {
+    "@next/third-parties": "^16.3.6",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
     "@vercel/analytics": "^2.0.1",
