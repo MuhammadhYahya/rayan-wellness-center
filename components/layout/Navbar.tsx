@@ -1,120 +1,99 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from '@/components/ui/navigation-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { NAV_LINKS } from '@/lib/site';
 import Logo from './Logo';
+import { useFooterInView } from './useFooterInView';
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/services', label: 'Services' },
-  { href: '/about', label: 'About' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/reviews', label: 'Reviews' },
-  { href: '/contact', label: 'Contact' },
-];
-
+// Header bar (64px phones/tablets, 80px desktop). Clear at the very top of the
+// page, green once you scroll (see .site-header in globals.css), and it slides
+// away while the footer is on screen. The mobile menu is a native <details>
+// element, so it opens even if JavaScript fails on older phones.
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const menuRef = useRef<HTMLDetailsElement>(null);
+  const atFooter = useFooterInView();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
-    };
+    if (menuRef.current) menuRef.current.open = false;
+  }, [pathname]);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname?.startsWith(href);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-forest/95 shadow-lg backdrop-blur-md' : 'bg-transparent'
-      }`}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:py-5">
-        {/* Left spacer for mobile balance */}
-        <div className="w-10 md:hidden" />
+    <header className={`site-header fixed inset-x-0 top-0 z-50 h-16 text-ivory lg:h-20 ${atFooter ? 'is-hidden' : ''}`}>
+      <div className="site-container flex h-full items-center justify-between gap-8">
+        <Logo />
 
-        {/* Centered Logo on Mobile */}
-        <div className="flex justify-center md:justify-start">
-          <Logo />
-        </div>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:block">
-          <NavigationMenu>
-            <NavigationMenuList className="gap-8">
-              {navLinks.map((link) => (
-                <NavigationMenuItem key={link.href}>
+        <nav aria-label="Main" className="hidden lg:block">
+          <ul className="flex gap-8 text-[0.9375rem] font-medium">
+            {NAV_LINKS.map((link) => {
+              const active = isActive(link.href);
+              return (
+                <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="font-medium text-ivory transition-colors hover:text-sage"
+                    aria-current={active ? 'page' : undefined}
+                    className={
+                      active
+                        ? 'text-sage'
+                        : 'text-ivory transition-colors hover:text-sage'
+                    }
                   >
                     {link.label}
                   </Link>
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
-        {/* Desktop CTA Button */}
-        <div className="hidden md:block">
-          <Button
-            asChild
-            className="rounded-full bg-moss px-8 py-6 font-medium text-white hover:bg-moss/90"
+        <Link href="/contact" className="btn btn-primary hidden lg:inline-flex">
+          Book a Session
+        </Link>
+
+        <details ref={menuRef} className="group lg:hidden">
+          <summary
+            aria-label="Menu"
+            className="menu-toggle flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border-[1.5px] border-ivory/50 text-ivory"
           >
-            <Link href="/contact">Book a Session</Link>
-          </Button>
-        </div>
+            <Menu className="h-5 w-5 group-open:hidden" aria-hidden="true" />
+            <X className="hidden h-5 w-5 group-open:block" aria-hidden="true" />
+          </summary>
 
-        {/* Mobile Menu Button - Right side */}
-        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full text-ivory hover:bg-white/10 md:hidden"
-            >
-              <Menu className="h-7 w-7" />
-            </Button>
-          </SheetTrigger>
-
-          <SheetContent
-            side="right"
-            className="w-[300px] border-l border-white/10 bg-forest/95 p-0 text-ivory backdrop-blur-xl"
+          <nav
+            aria-label="Mobile"
+            className="absolute inset-x-0 top-16 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-line-dark bg-forest px-5 pb-6 pt-2 shadow-xl sm:px-8"
           >
-            <div className="flex h-full flex-col">
-              <div className="border-b border-white/10 px-6 py-5">
-                <h2 className="text-xl font-semibold tracking-wide">Menu</h2>
-              </div>
-
-              <div className="flex flex-col gap-3 px-4 py-6">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="rounded-xl px-4 py-3 text-lg font-medium transition-all duration-200 hover:bg-white/10"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+            <ul>
+              {NAV_LINKS.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <li key={link.href} className="border-b border-line-dark">
+                    <Link
+                      href={link.href}
+                      aria-current={active ? 'page' : undefined}
+                      className={`block py-3.5 text-lg font-medium ${
+                        active ? 'text-sage' : 'text-ivory'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <Link href="/contact" className="btn btn-primary mt-5 w-full">
+              Book a Session
+            </Link>
+          </nav>
+        </details>
       </div>
-    </nav>
+    </header>
   );
 }

@@ -10,6 +10,8 @@ import { getApprovedReviews, getServices } from '@/lib/sanity/queries';
 import { hasSanityWriteToken } from '@/lib/sanity/client';
 
 export const metadata: Metadata = {
+  // Own address for Google (otherwise the page inherits the home page's "/").
+  alternates: { canonical: '/reviews' },
   title: 'Client Reviews & Testimonials',
   description:
     'Read real stories from clients who experienced massage therapy, sports recovery and yoga sessions at Rayan\'s Recovery & Wellness Center in Matugama, Sri Lanka.',

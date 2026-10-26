@@ -2,114 +2,185 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { getServiceIcon } from '@/lib/sanity/icons';
 import { urlForImage } from '@/lib/sanity/image';
 import type { Service } from '@/lib/sanity/types';
+import { displayDuration, displayTitle, serviceAnchor } from '@/lib/service-display';
+import SectionHeading from './SectionHeading';
 
 type ServicesGridProps = {
   services: Service[];
 };
 
-export default function ServicesGrid({ services }: ServicesGridProps) {
-  return (
-    <section className="bg-ivory py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-5">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 font-display text-4xl text-forest md:text-5xl">
-            What We Offer
-          </h2>
-          <p className="mx-auto max-w-2xl text-charcoal/70">
-            Personalized healing therapies tailored to your body and goals, delivered in
-            a sanctuary of restorative calm.
-          </p>
-        </div>
+// Static class names (Tailwind only ships classes it can see written out).
+const FEATURED_COLS = {
+  1: 'sm:mx-auto sm:max-w-md lg:max-w-md',
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-2 lg:grid-cols-3',
+} as const;
+const SEE_ALL_SM = { 1: 'sm:col-span-1', 2: 'sm:col-span-2' } as const;
+const SEE_ALL_LG = { 1: 'lg:col-span-1', 2: 'lg:col-span-2', 3: 'lg:col-span-3', 4: 'lg:col-span-4' } as const;
 
-        {services.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map((service) => {
-              const Icon = getServiceIcon(service.iconKey);
+const THUMB_COLOURS = ['#c9d6c3', '#b7c8b1', '#d6dfcf', '#aebfa8', '#c2d0bc', '#bccbb6', '#cfd9c9'];
+
+// Home page: the first 3 services (by their Sanity "order") as full cards, the rest
+// as a compact photo menu that links to the Services page. The "See all" item
+// stretches to fill the last row, so no grid cell is ever left empty.
+export default function ServicesGrid({ services }: ServicesGridProps) {
+  const featured = services.slice(0, 3);
+  const rest = services.slice(3);
+  const total = services.length;
+
+  // Menu items incl. "See all": below 1024px the 3rd service is in the menu too.
+  const smItems = Math.max(total - 2, 0) + 1;
+  const lgItems = rest.length + 1;
+  const smSpan = (smItems % 2 === 1 ? 2 : 1) as 1 | 2;
+  const lgRemainder = lgItems % 4;
+  const lgSpan = (lgRemainder === 0 ? 1 : 5 - lgRemainder) as 1 | 2 | 3 | 4;
+
+  return (
+    <section aria-labelledby="services-title" className="bg-ivory py-[4.5rem] lg:py-28">
+      <div className="site-container">
+        <SectionHeading
+          id="services-title"
+          eyebrow="Treatments"
+          title="What We Offer"
+          intro="Personalized healing therapies tailored to your body and goals, delivered in a sanctuary of restorative calm."
+        />
+
+        {featured.length > 0 ? (
+          <div
+            className={`mt-11 grid grid-cols-1 gap-5 sm:mt-12 sm:gap-6 lg:gap-7 ${
+              FEATURED_COLS[featured.length as 1 | 2 | 3]
+            }`}
+          >
+            {featured.map((service, index) => {
+              const title = displayTitle(service.title);
+              const duration = displayDuration(service.duration);
               const imageUrl = service.image
-                ? urlForImage(service.image).width(720).height(480).fit('crop').url()
+                ? urlForImage(service.image).width(900).height(600).fit('crop').url()
                 : null;
 
               return (
-                <Card
+                <article
                   key={service._id}
-                  className="group relative overflow-hidden rounded-3xl border border-sage/10 bg-white transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl"
+                  // Phones and tablets show 2 cards; the 3rd appears on desktop.
+                  className={`flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-[0_1.5rem_5rem_rgba(26,46,26,0.08)] ${
+                    index === 2 ? 'hidden lg:flex' : 'flex'
+                  }`}
                 >
-                  <div className="relative h-56 overflow-hidden">
+                  <div className="relative aspect-[3/2] bg-[#c9d6c3]">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
-                        alt={service.image?.alt || service.title}
+                        alt={service.image?.alt || title}
                         fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                        className="object-cover"
                       />
                     ) : null}
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-                    {service.duration ? (
-                      <div className="absolute right-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-medium text-forest shadow-md">
-                        {service.duration}
-                      </div>
-                    ) : null}
-
-                    {Icon ? (
-                      <div className="absolute left-4 top-4 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/95 shadow-md">
-                        <Icon className="h-6 w-6 text-moss" />
-                      </div>
+                    {duration ? (
+                      <span className="absolute left-4 top-4 rounded-full bg-white/95 px-2.5 py-1.5 text-xs font-medium leading-tight text-forest">
+                        {duration}
+                      </span>
                     ) : null}
                   </div>
 
-                  <CardContent className="p-6">
-                    <h3 className="mb-3 text-xl font-semibold text-forest transition-colors group-hover:text-moss">
-                      {service.title}
+                  <div className="flex flex-1 flex-col items-center gap-3 p-[1.625rem] text-center lg:items-start lg:text-left">
+                    <h3 className="font-display text-[clamp(1.25rem,1.6vw,1.5rem)] leading-[1.3] text-forest">
+                      {title}
                     </h3>
-
-                    <p className="mb-6 line-clamp-3 text-[15px] leading-relaxed text-charcoal/80">
-                      {service.shortDescription}
-                    </p>
-
-                    <div className="flex justify-end">
-                      <Button
-                        asChild
-                        variant="ghost"
-                        className="group/link h-auto p-0 font-medium text-moss hover:text-moss/80"
-                      >
-                        <Link
-                          href={`/contact?service=${encodeURIComponent(service.slug || service.title)}`}
-                          className="flex items-center gap-1"
-                        >
-                          Learn More
-                          <ArrowRight className="h-4 w-4 transition group-hover/link:translate-x-1" />
-                        </Link>
-                      </Button>
+                    <div className="flex-1">
+                      <p className="line-clamp-3 text-base leading-[1.8] text-ink-muted">
+                        {service.shortDescription}
+                      </p>
                     </div>
-                  </CardContent>
-
-                  <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-moss to-sage transition-all duration-700 group-hover:w-full" />
-                </Card>
+                    <Link
+                      href={`/contact?service=${encodeURIComponent(service.slug || service.title)}`}
+                      className="mt-1 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-moss transition-colors hover:text-forest"
+                    >
+                      Book {title}
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                  </div>
+                </article>
               );
             })}
           </div>
-        ) : (
-          <div className="rounded-3xl border border-dashed border-sage/30 bg-white/70 px-6 py-10 text-center text-charcoal/70">
-            Add services in Sanity to populate this section.
-          </div>
-        )}
+        ) : null}
 
-        <div className="mt-14 text-center">
-          <Button
-            asChild
-            size="lg"
-            className="rounded-full bg-forest px-10 py-7 text-base text-ivory hover:bg-forest/90"
-          >
-            <Link href="/contact">Book Session</Link>
-          </Button>
+        {/* Mobile and tablet only show 2 full cards, so the 3rd joins the menu there. */}
+        <div className="mt-6 rounded-[1.25rem] border border-line bg-white px-5 py-7 lg:mt-7 lg:px-12 lg:py-10">
+          <div className="flex flex-col items-center gap-1.5 text-center lg:flex-row lg:items-baseline lg:justify-between lg:text-left">
+            <h3 className="font-display text-[clamp(1.5rem,2.2vw,1.875rem)] leading-[1.25] text-forest">
+              More treatments
+            </h3>
+            <p className="text-[0.9375rem] text-ink-muted">Tap any treatment to see details</p>
+          </div>
+
+          <ul className="mt-[1.125rem] grid grid-cols-1 sm:grid-cols-2 sm:gap-x-7 lg:mt-8 lg:grid-cols-4 lg:gap-x-7 lg:gap-y-6">
+            {services.map((service, index) => {
+              // The 3rd service is a full card on desktop, so it only appears here below 1024px.
+              if (index < 2) return null;
+              if (index === 2 && featured.length < 3) return null;
+              const title = displayTitle(service.title);
+              const duration = displayDuration(service.duration);
+              const thumbUrl = service.image
+                ? urlForImage(service.image).width(120).height(120).fit('crop').url()
+                : null;
+
+              return (
+                <li
+                  key={service._id}
+                  className={`border-b border-[#eef1ea] sm:border-b-0 ${index === 2 ? 'lg:hidden' : ''}`}
+                >
+                  <Link href={`/services#${serviceAnchor(service)}`} className="flex min-w-0 items-center gap-3 py-2.5 lg:py-0">
+                    <span
+                      className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full lg:h-[3.25rem] lg:w-[3.25rem]"
+                      style={{ backgroundColor: THUMB_COLOURS[index % THUMB_COLOURS.length] }}
+                    >
+                      {thumbUrl ? (
+                        <Image src={thumbUrl} alt="" fill sizes="3.25rem" className="object-cover" />
+                      ) : null}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[0.9375rem] font-medium leading-[1.3] text-forest">
+                        {title}
+                      </span>
+                      {duration ? (
+                        <span className="mt-0.5 block text-[0.8125rem] leading-[1.4] text-ink-muted">
+                          {duration}
+                        </span>
+                      ) : null}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+
+            <li className={`${SEE_ALL_SM[smSpan]} ${SEE_ALL_LG[lgSpan]}`}>
+              <Link href="/services" className="flex min-w-0 items-center gap-3 py-2.5 lg:py-0">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-moss text-white lg:h-[3.25rem] lg:w-[3.25rem]">
+                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="block text-[0.9375rem] font-medium leading-[1.3] text-moss">
+                    See all {total} treatments
+                  </span>
+                  <span className="mt-0.5 block text-[0.8125rem] leading-[1.4] text-ink-muted">
+                    Details &amp; booking
+                  </span>
+                </span>
+              </Link>
+            </li>
+          </ul>
+
+          <p className="mt-[1.375rem] border-t border-line pt-5 text-center text-[0.9375rem] text-ink-muted">
+            Not sure which one is right for you?{' '}
+            <Link href="/contact" className="font-medium text-moss hover:text-forest">
+              Book a Session
+            </Link>{' '}
+            and Rayan will guide you.
+          </p>
         </div>
       </div>
     </section>

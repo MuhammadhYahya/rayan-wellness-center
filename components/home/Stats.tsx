@@ -1,57 +1,32 @@
-// components/home/Stats.tsx
-'use client';
-
-import CountUp from 'react-countup';
-import { useInView } from 'react-intersection-observer';
+// Real numbers are written straight into the HTML: they show on every phone
+// (no count-up animation that needs JavaScript) and Google can read them.
+const stats = [
+  { value: '22+', label: 'Years of Navy discipline' },
+  { value: '10+', label: 'Professional certifications' },
+  { value: '1,200+', label: 'Hours of training' },
+];
 
 export default function Stats() {
-  const { ref, inView } = useInView({
-    threshold: 0.3,
-    triggerOnce: true,
-  });
-
   return (
-    <section ref={ref} className="bg-forest py-12 md:py-16">
-      <div className="max-w-5xl mx-auto px-5">
-        <div className="flex items-center justify-between md:justify-around gap-4 md:gap-12 text-center">
-          
-          {/* Stat 1 */}
-          <div className="flex-1">
-            <div className="text-4xl sm:text-5xl md:text-6xl font-semibold text-ivory mb-2">
-              {inView && <CountUp start={0} end={22} duration={2.5} />}+
+    <section aria-label="Rayan at a glance" className="border-b border-line bg-white">
+      <div className="site-container">
+        <dl className="grid grid-cols-3">
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={`flex flex-col-reverse px-2 py-[1.625rem] text-center lg:px-4 lg:py-[2.125rem] ${
+                index > 0 ? 'border-l border-line' : ''
+              }`}
+            >
+              <dt className="mt-2.5 text-[0.8125rem] leading-[1.45] text-ink-muted sm:text-sm">
+                {stat.label}
+              </dt>
+              <dd className="font-display text-[1.75rem] leading-none text-forest sm:text-4xl lg:text-[2.75rem]">
+                {stat.value}
+              </dd>
             </div>
-            <p className="text-sage text-[10px] sm:text-xs uppercase tracking-widest leading-tight">
-              Years of<br />Navy Discipline
-            </p>
-          </div>
-
-          {/* Divider 1 */}
-          <div className="w-px h-16 bg-sage/40" />
-
-          {/* Stat 2 */}
-          <div className="flex-1">
-            <div className="text-4xl sm:text-5xl md:text-6xl font-semibold text-ivory mb-2">
-              {inView && <CountUp start={0} end={10} duration={2.5} />}+
-            </div>
-            <p className="text-sage text-[10px] sm:text-xs uppercase tracking-widest leading-tight">
-              Professional<br />Certifications
-            </p>
-          </div>
-
-          {/* Divider 2 */}
-          <div className="w-px h-16 bg-sage/40" />
-
-          {/* Stat 3 */}
-          <div className="flex-1">
-            <div className="text-4xl sm:text-5xl md:text-6xl font-semibold text-ivory mb-2">
-              {inView && <CountUp start={0} end={1200} duration={2.8} />}+
-            </div>
-            <p className="text-sage text-[10px] sm:text-xs uppercase tracking-widest leading-tight">
-              Hours of<br />Training
-            </p>
-          </div>
-
-        </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

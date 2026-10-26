@@ -7,14 +7,247 @@
   --color-sage: #7EA87A;
   --color-ivory: #F5F0E8;
   --color-earth: #C4A882;
+  /* Readable text colours (WCAG AA). Sage text is for dark backgrounds only. */
+  --color-ink-muted: #5B6B58;   /* secondary text on ivory / white (5.0:1) */
+  --color-ivory-muted: #B4B5AC; /* secondary text on forest (7.0:1) */
+  --color-leaf: #9CC297;        /* accent text on forest / photo */
+  --color-line: #DDE2D2;        /* hairlines on light */
+  --color-line-dark: #314331;   /* hairlines on forest */
+  --color-whatsapp: #008138;    /* WhatsApp fill, white text passes (5.0:1) */
   --font-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
   --font-display: Georgia, "Times New Roman", serif;
 }
+
+/* Fluid scale for big screens: 1rem = 16px up to 1280px wide, then it grows with
+   the screen to 24px (1.5x) at 1920px and stays there. Because Tailwind sizes are
+   in rem, the whole layout (text, spacing, cards, header) scales together, so a
+   large monitor looks like the laptop design, just bigger, without wide empty sides. */
+html {
+  font-size: 16px;
+}
+@media (min-width: 80rem) {
+  html {
+    font-size: 1.25vw;
+    font-size: min(1.25vw, 24px);
+  }
+}
+
+/* Fixed header height: 4rem on phones/tablets, 5rem from 1024px. Anchor jumps clear it. */
+html {
+  scroll-padding-top: 4rem;
+}
+@media (min-width: 64rem) {
+  html {
+    scroll-padding-top: 5rem;
+  }
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+@layer components {
+  /* One shared container so every section, the header and the footer line up. */
+  .site-container {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 40rem) {
+    .site-container {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 64rem) {
+    .site-container {
+      padding-inline: 3rem;
+    }
+  }
+
+  /* Pill buttons. Plain CSS (no gradients / colour-mix) so older iPhones render them. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding-inline: 1.625rem;
+    border-radius: 9999px;
+    border: 1.5px solid transparent;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .btn svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+  }
+  .btn:focus-visible {
+    outline: 2px solid var(--color-sage);
+    outline-offset: 3px;
+  }
+  .btn-primary {
+    background-color: var(--color-moss);
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background-color: #2f5529;
+  }
+  .btn-ghost-dark {
+    color: var(--color-ivory);
+    border-color: rgba(245, 240, 232, 0.7);
+  }
+  .btn-ghost-dark:hover {
+    background-color: rgba(245, 240, 232, 0.1);
+  }
+  .btn-ghost-light {
+    color: var(--color-forest);
+    border-color: var(--color-forest);
+  }
+  .btn-ghost-light:hover {
+    background-color: var(--color-forest);
+    color: var(--color-ivory);
+  }
+  .btn-whatsapp {
+    background-color: var(--color-whatsapp);
+    color: #ffffff;
+  }
+  .btn-whatsapp:hover {
+    background-color: #00692d;
+  }
+
+  /* Hero: full first screen, capped on tall monitors, natural height on landscape phones.
+     The first line is the fallback for browsers without svh / min(). */
+  .hero-screen {
+    min-height: 100vh;
+    min-height: min(100svh, 53.75rem);
+  }
+  @media (max-height: 480px) {
+    .hero-screen {
+      min-height: auto;
+    }
+  }
+  .hero-title {
+    font-size: clamp(2.5rem, 6.5vw, 5.5rem);
+    font-size: clamp(2.5rem, min(6.5vw, 9.5svh), 5.5rem);
+  }
+  @media (max-height: 760px) {
+    .hero-scroll-hint {
+      display: none;
+    }
+  }
+
+  /* Section label with short lines either side, always centred. */
+  .eyebrow-lines {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.875rem;
+  }
+  .eyebrow-lines::before,
+  .eyebrow-lines::after {
+    content: "";
+    width: 2.25rem;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.45;
+  }
+
+  /* Section intro: short centred line above on phones/tablets, full rule above on desktop. */
+  .sh-intro {
+    position: relative;
+    padding-top: 1.25rem;
+  }
+  .sh-intro::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3rem;
+    height: 1px;
+    margin-left: -1.5rem;
+    background-color: var(--color-moss);
+    opacity: 0.5;
+  }
+  @media (min-width: 64rem) {
+    .sh-intro {
+      border-top: 1px solid #c9d3c5;
+      padding-top: 1.375rem;
+    }
+    .sh-intro::before {
+      display: none;
+    }
+  }
+
+  /* Mobile menu built on <details>: opens without JavaScript. */
+  .menu-toggle {
+    list-style: none;
+  }
+  .menu-toggle::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* Top bar: solid green by default (also when JavaScript is off or fails), clear
+   while the page is at the very top (the small script in layout.tsx sets
+   html[data-top]), and slid away while the footer is on screen. */
+.site-header {
+  background-color: #1a2e1a;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 1px 0 rgba(245, 240, 232, 0.08);
+}
+html[data-top] .site-header {
+  background-color: transparent;
+  box-shadow: none;
+}
+/* Soft dark fade behind the clear bar (reaches a little below it) so the logo
+   and menu stay readable over photos. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: -3rem;
+  left: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(rgba(26, 46, 26, 0.78), rgba(26, 46, 26, 0.45) 55%, rgba(26, 46, 26, 0));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+html[data-top] .site-header::before {
+  opacity: 1;
+}
+/* Keep it solid while the phone menu is open (browsers without :has just skip this). */
+.site-header:has(details[open]) {
+  background-color: #1a2e1a;
+}
+.site-header:has(details[open])::before {
+  opacity: 0;
+}
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+.site-header.is-hidden:focus-within {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

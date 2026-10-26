@@ -1,9 +1,6 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, Quote } from 'lucide-react';
 
 import type { Review } from '@/lib/sanity/types';
 
@@ -11,156 +8,116 @@ type TestimonialsProps = {
   reviews: Review[];
 };
 
+// No slider, timer or animation library: reviews are plain HTML. One review is a
+// single centred card; 2–3 reviews swipe on phones/tablets and sit side by side
+// on desktop (column count = number of reviews, so no empty cells).
+// Cards in a row share one height; inside each card the quote and the person stay
+// together and sit in the middle, so a short review never leaves a big gap
+// between its text and the photo.
+const LG_COLS = { 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3' } as const;
+
+function Stars({ rating }: { rating: number }) {
+  return (
+    <div className="flex justify-center gap-1" role="img" aria-label={`${rating} out of 5 stars`}>
+      {Array.from({ length: rating }).map((_, index) => (
+        <svg key={index} viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 text-sage" aria-hidden="true">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+function ReviewCard({ review, compact }: { review: Review; compact: boolean }) {
+  return (
+    <figure
+      className={`flex h-full flex-col justify-center rounded-3xl border border-line-dark text-center ${
+        compact ? 'px-6 py-8 sm:px-8' : 'px-6 py-9 sm:px-[3.25rem] sm:py-11'
+      }`}
+    >
+      <Quote className="mx-auto h-8 w-8 text-sage" aria-hidden="true" />
+      <div className="mt-4">
+        <Stars rating={review.rating} />
+      </div>
+      <blockquote
+        className={`mt-[1.125rem] font-display leading-[1.6] text-ivory ${
+          compact ? 'line-clamp-6 text-lg lg:line-clamp-none' : 'text-[clamp(1.25rem,2vw,1.625rem)]'
+        }`}
+      >
+        “{review.quote}”
+      </blockquote>
+      <figcaption className="mt-6 flex items-center justify-center gap-3">
+        {review.imageUrl ? (
+          <Image
+            src={review.imageUrl}
+            alt=""
+            width={48}
+            height={48}
+            className="h-12 w-12 shrink-0 rounded-full object-cover"
+          />
+        ) : (
+          <span
+            aria-hidden="true"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-line-dark font-display text-lg text-ivory"
+          >
+            {review.name.charAt(0)}
+          </span>
+        )}
+        <span className="text-left leading-[1.4]">
+          <span className="block text-[0.9375rem] font-medium text-ivory">{review.name}</span>
+          {review.role ? (
+            <span className="mt-0.5 block text-[0.8125rem] text-ivory-muted">{review.role}</span>
+          ) : null}
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
 export default function Testimonials({ reviews }: TestimonialsProps) {
-  const [current, setCurrent] = useState(0);
-  const hasReviews = reviews.length > 0;
-  const currentIndex = hasReviews ? current % reviews.length : 0;
+  const list = reviews.slice(0, 3);
+  if (list.length === 0) return null;
 
-  useEffect(() => {
-    if (!hasReviews) return;
-
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % reviews.length);
-    }, 7000);
-
-    return () => clearInterval(timer);
-  }, [hasReviews, reviews.length]);
-
-  if (!hasReviews) {
-    return (
-      <section className="bg-forest py-16 text-ivory md:py-24">
-        <div className="mx-auto max-w-4xl px-5">
-          <div className="mb-12 text-center">
-            <h2 className="font-display mb-4 text-4xl md:text-5xl">
-              What Our Clients Say
-            </h2>
-            <p className="text-sage">
-              Real stories from people who experienced real transformation
-            </p>
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/10 px-8 py-12 text-center backdrop-blur-xl">
-            <p className="text-ivory/85">
-              Approve and feature reviews in Sanity to populate this carousel.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  const next = () => setCurrent((prev) => (prev + 1) % reviews.length);
-  const prev = () => setCurrent((prev) => (prev - 1 + reviews.length) % reviews.length);
-  const currentReview = reviews[currentIndex];
-  const hasImage = Boolean(currentReview.imageUrl);
+  const single = list.length === 1;
 
   return (
-    <section className="bg-forest py-16 text-ivory md:py-24">
-      <div className="mx-auto max-w-4xl px-5">
-        <div className="mb-12 text-center">
-          <h2 className="font-display mb-4 text-4xl md:text-5xl">
-            What Our Clients Say
-          </h2>
-          <p className="text-sage">Real stories from people who experienced real transformation</p>
-        </div>
+    <section aria-labelledby="reviews-title" className="bg-forest py-[4.5rem] text-center text-ivory lg:py-28">
+      <div className="site-container">
+        <p className="eyebrow-lines text-xs font-medium uppercase tracking-[0.22em] text-sage">
+          Client stories
+        </p>
+        <h2 id="reviews-title" className="mt-3.5 font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.15]">
+          What Our Clients Say
+        </h2>
+        <p className="mx-auto mt-[1.125rem] max-w-[36rem] text-[clamp(1.0625rem,1.3vw,1.1875rem)] font-light leading-[1.85] text-ivory-muted">
+          Real stories from people who experienced real transformation.
+        </p>
 
-        <div className="relative">
-          <div className="flex min-h-[460px] items-center overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentReview._id}
-                initial={{ opacity: 0, x: 80 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -80 }}
-                transition={{ duration: 0.7, ease: 'easeInOut' }}
-                className="w-full"
-              >
-                <div className="mx-auto max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-white/10 backdrop-blur-xl">
-
-                  {/* Large Reviewer Photo */}
-                  {hasImage && (
-                    <div className="flex justify-center pt-10">
-                      <div className="relative h-[230px] w-[230px] md:h-[260px] md:w-[260px]">
-                        <Image
-                          src={currentReview.imageUrl as string}
-                          alt={currentReview.name}
-                          fill
-                          sizes="(max-width: 768px) 230px, 260px"
-                          className="rounded-3xl object-cover shadow-2xl ring-8 ring-white/10"
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className={`px-8 pb-14 text-center ${hasImage ? 'pt-6' : 'pt-12'}`}>
-
-                    {/* Stars */}
-                    <div className="mb-10 flex justify-center gap-[10px]">
-                      {[...Array(currentReview.rating)].map((_, index) => (
-                        <svg
-                          key={index}
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-9 w-9 text-green-700 drop-shadow-sm"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                        </svg>
-                      ))}
-                    </div>
-
-                    {/* Review Quote - Optimized */}
-<blockquote className="mb-10 font-light text-[1.05rem] leading-[1.5] tracking-wide text-ivory md:text-[1.15rem] lg:text-[1.25rem]">
-  &ldquo;{currentReview.quote}&rdquo;
-</blockquote>
-
-{/* Reviewer Info */}
-<div className="space-y-1">
-  <p className="font-display text-[1.3rem] md:text-[1.45rem] font-semibold tracking-tight text-white">
-    {currentReview.name}
-  </p>
-
-  {currentReview.role && (
-    <p className="text-[0.9rem] text-sage font-medium tracking-wide">
-      {currentReview.role}
-    </p>
-  )}
-</div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+        {single ? (
+          <div className="mx-auto mt-11 max-w-[47.5rem]">
+            <ReviewCard review={list[0]} compact={false} />
           </div>
-
-          {/* Navigation Buttons */}
-          <button
-            onClick={prev}
-            aria-label="Previous testimonial"
-            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20"
+        ) : (
+          <div
+            className={`scrollbar-hide -mx-5 mt-11 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 sm:-mx-8 sm:scroll-px-8 sm:px-8 lg:mx-0 lg:grid lg:gap-6 lg:overflow-visible lg:px-0 ${
+              LG_COLS[list.length as 2 | 3]
+            }`}
           >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
+            {list.map((review) => (
+              <div key={review._id} className="w-[86%] shrink-0 snap-start sm:w-[60%] lg:w-auto">
+                <ReviewCard review={review} compact />
+              </div>
+            ))}
+          </div>
+        )}
 
-          <button
-            onClick={next}
-            aria-label="Next testimonial"
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
-        </div>
-
-        {/* Dots */}
-        <div className="mt-10 flex justify-center gap-3">
-          {reviews.map((review, index) => (
-            <button
-              key={review._id}
-              onClick={() => setCurrent(index)}
-              className={`h-3 rounded-full transition-all ${currentIndex === index ? 'w-8 bg-sage' : 'w-3 bg-white/30 hover:bg-white/50'
-                }`}
-            />
-          ))}
-        </div>
+        <Link
+          href="/reviews"
+          className="mt-[1.875rem] inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-leaf transition-colors hover:text-ivory"
+        >
+          Read more reviews
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
       </div>
     </section>
   );

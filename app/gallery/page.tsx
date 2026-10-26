@@ -4,6 +4,8 @@ import GalleryGrid from '@/components/gallery/GalleryGrid';
 import { galleryImages } from '@/lib/gallery';
 
 export const metadata: Metadata = {
+  // Own address for Google (otherwise the page inherits the home page's "/").
+  alternates: { canonical: '/gallery' },
   title: 'Photo Gallery',
   description:
     'See our peaceful treatment spaces and healing sessions in Keeranthidiya, Matugama. Get a feel for what to expect before you book your massage or yoga session.',

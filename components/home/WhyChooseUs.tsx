@@ -1,69 +1,78 @@
-// components/home/WhyChooseUs.tsx
-import { Shield, Award, Users, Leaf } from 'lucide-react';
+import SectionHeading from './SectionHeading';
 
-const pillars = [
+// Design "B · Note from Rayan": a short note in Rayan's own voice plus four
+// plain-text reasons. No icon boxes, so the section reads as personal, not a
+// template. The quote and reasons 01-02 are draft wording for Rayan to approve.
+const QUOTE =
+  'Before I begin, I ask where it hurts, how you move and how you want to feel afterwards. Those small details decide your treatment — not a fixed routine.';
+
+const reasons = [
   {
-    icon: Shield,
-    title: "Military Precision",
-    desc: "22 years of Sri Lanka Navy discipline ensures every session is handled with focus, safety, and attention to detail.",
-    color: "text-forest"
+    title: 'It starts with listening',
+    desc: 'Every session begins with a short talk about your pain, your sport or work, and your goals — so the treatment fits your body.',
   },
   {
-    icon: Award,
-    title: "Multi-Certified Expertise",
-    desc: "10+ professional certifications in Sports Massage, Thai Massage Therapy, Yoga and more.",
-    color: "text-forest"
+    title: 'Precision in every detail',
+    desc: '22 years of Sri Lanka Navy discipline means focus, safety and care in the pressure, timing and technique of your session.',
   },
   {
-    icon: Leaf,
-    title: "Healing in Nature",
-    desc: "Experience deep relaxation in a calm, green environment surrounded by rubber trees and fresh air.",
-    color: "text-forest"
+    title: 'The right technique for you',
+    desc: 'With 10+ certifications in sports massage, Thai massage therapy, yoga and more, Rayan chooses the method that suits your body.',
   },
   {
-    icon: Users,
-    title: "Personalized Care",
-    desc: "Every session is tailored to your body, goals, and specific needs — never a generic treatment.",
-    color: "text-forest"
-  }
+    title: 'Space to fully relax',
+    desc: 'A quiet, green setting among rubber trees and fresh air, so your body and mind can let go.',
+  },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-16 md:py-24 bg-ivory">
-      <div className="max-w-7xl mx-auto px-5">
-        <div className="text-center mb-14">
-          <h2 className="font-display text-4xl md:text-5xl text-forest mb-4">
-            Why Choose Rayan
-          </h2>
-          <p className="text-charcoal/70 max-w-lg mx-auto text-lg">
-            What makes this healing experience truly different
-          </p>
-        </div>
+    <section aria-labelledby="why-title" className="bg-white py-[4.5rem] lg:py-28">
+      <div className="site-container">
+        <SectionHeading
+          id="why-title"
+          eyebrow="Why Rayan"
+          title="Why Choose Rayan"
+          intro="The small things you notice from the first minute of your session."
+        />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {pillars.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={index}
-                className="group bg-white p-8 rounded-3xl border border-sage/10 hover:border-moss/30 
-                           hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-forest/5 flex items-center justify-center mb-6 group-hover:bg-moss/10 transition-colors">
-                  <Icon className={`w-8 h-8 ${item.color}`} />
-                </div>
+        {/* Phones/tablets: note, then the reasons. Desktop: note left, 2x2 reasons right. */}
+        <div className="mt-11 grid gap-11 lg:mt-14 lg:grid-cols-2 lg:items-center lg:gap-20">
+          <figure className="relative pt-11 text-center lg:text-left">
+            <span
+              aria-hidden="true"
+              className="absolute -top-3 left-1/2 -translate-x-1/2 font-display text-[5.5rem] leading-none text-leaf lg:-left-1 lg:translate-x-0"
+            >
+              &ldquo;
+            </span>
+            <blockquote className="mx-auto max-w-[34rem] lg:max-w-none">
+              <p className="font-display text-2xl italic leading-[1.5] text-forest lg:text-[2rem] lg:leading-[1.45]">
+                {QUOTE}
+              </p>
+            </blockquote>
+            <figcaption className="mt-7">
+              <span className="block font-display text-lg leading-[1.3] text-forest">
+                Rayan Vidumina Jayamanna
+              </span>
+              <span className="block text-sm leading-[1.4] text-ink-muted">
+                Founder · Keeranthidiya
+              </span>
+            </figcaption>
+          </figure>
 
-                <h3 className="text-xl font-semibold text-forest mb-4 group-hover:text-moss transition-colors">
-                  {item.title}
+          <ol className="grid grid-cols-1 text-center sm:grid-cols-2 sm:gap-x-8 lg:gap-x-10 lg:text-left">
+            {reasons.map(({ title, desc }, index) => (
+              <li key={title} className="border-t border-line py-[1.375rem] lg:pb-6 lg:pt-7">
+                <span aria-hidden="true" className="block text-xs font-medium tracking-[0.18em] text-moss">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="mt-1.5 font-display text-[1.3125rem] leading-[1.35] text-forest lg:text-[1.4375rem]">
+                  {title}
                 </h3>
-
-                <p className="text-charcoal/80 leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            );
-          })}
+                <p className="mt-1.5 text-base leading-[1.75] text-ink-muted">{desc}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

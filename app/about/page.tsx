@@ -9,6 +9,8 @@ import { fallbackCertificates, type CertificateItem } from '@/lib/certificates';
 import { getCertificates } from '@/lib/sanity/queries';
 
 export const metadata: Metadata = {
+  // Own address for Google (otherwise the page inherits the home page's "/").
+  alternates: { canonical: '/about' },
   title: 'About Our Wellness Center & Founder',
   description:
     'Meet Rayan Vidumina Jayamanna, a certified massage therapist and yoga instructor bringing 22 years of discipline and professional massage expertise to Matugama, Sri Lanka.',

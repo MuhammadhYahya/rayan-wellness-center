@@ -1,79 +1,76 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, MapPinned } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-
+// Server component: no JavaScript needed. The headline and text are in the HTML
+// from the start (no fade-in), which keeps the page's main content fast to show.
 export default function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section
+      aria-labelledby="hero-title"
+      className="hero-screen relative flex flex-col overflow-hidden bg-forest text-ivory"
+    >
       <Image
         src="/assets/images/hero-bg.jpg"
-        alt="Rayan's Recovery & Wellness Center - Forest Setting"
+        alt=""
         fill
-        className="object-cover"
-        priority
+        preload
+        sizes="100vw"
+        className="object-cover object-[center_62%]"
+      />
+      {/* Plain rgba tint (works on older browsers) + a soft darker centre behind the text */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 55% 45% at 50% 50%, rgba(26,46,26,0.38), rgba(26,46,26,0) 72%), rgba(26,46,26,0.5)',
+        }}
       />
 
-      <div className="absolute inset-0 bg-forest/70" />
-      <div className="absolute inset-0 bg-[radial-gradient(#3D6B35_1px,transparent_1px)] opacity-10 [background-size:50px_50px]" />
-
-      <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 backdrop-blur-md">
-          <MapPinned className="h-6 w-6 text-sage" />
-          <span className="text-sm uppercase tracking-widest text-ivory">
-            Keeranthidiya, Sri Lanka
-          </span>
-        </div>
-
-        <h1 className="mb-6 font-display text-4xl leading-tight text-ivory md:text-7xl lg:text-8xl">
-          Expert Healing.
-          <br />
-          <span className="italic text-sage">Lasting Results.</span>
-        </h1>
-
-        <p className="mx-auto mb-10 max-w-2xl text-xl font-light text-ivory/90 md:text-2xl">
-          Multi-certified massage therapy, yoga &amp; holistic treatments tailored to
-          your body and goals.
+      <div className="site-container relative z-10 flex flex-1 flex-col items-center justify-center pb-7 pt-16 text-center lg:pt-20">
+        <p className="inline-flex h-[2.125rem] items-center gap-2 rounded-full border border-ivory/30 bg-forest/40 px-4 text-xs font-medium uppercase tracking-[0.2em]">
+          <MapPin className="h-4 w-4 text-sage" aria-hidden="true" />
+          Keeranthidiya, Sri Lanka
         </p>
 
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button
-            asChild
-            size="lg"
-            className="group rounded-full bg-moss px-6 py-4 text-sm text-white hover:bg-moss/90 sm:px-10 sm:py-7 sm:text-lg"
-          >
-            <Link href="/contact">
-              Book a Session
-              <ArrowRight className="ml-2 transition group-hover:translate-x-1 sm:ml-3" />
-            </Link>
-          </Button>
+        <h1
+          id="hero-title"
+          className="hero-title mt-[1.875rem] font-display font-normal leading-[1.14] text-ivory"
+        >
+          Expert Healing.
+          <span className="mt-1 block italic text-leaf">Lasting Results.</span>
+        </h1>
 
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="rounded-full border-2 border-ivory px-6 py-4 text-sm text-ivory backdrop-blur-sm hover:bg-white/10 sm:px-10 sm:py-7 sm:text-lg"
-          >
-            <Link href="/services">Explore Services</Link>
-          </Button>
+        <p className="mt-7 max-w-[33rem] text-[clamp(1.0625rem,1.4vw,1.25rem)] font-light leading-[1.8] tracking-[0.01em] text-ivory/95">
+          Multi-certified massage therapy, yoga &amp; holistic treatments tailored to your body
+          and goals.
+        </p>
+
+        <div className="mt-10 flex w-full max-w-[21.25rem] flex-col gap-3.5 sm:w-auto sm:max-w-none sm:flex-row sm:justify-center">
+          {/* Phones/tablets: the top bar only has the menu icon, so Book stays here.
+              Laptop/desktop: Book is already in the top bar, so the hero offers
+              Explore Services as its one (solid) button. */}
+          <Link href="/contact" className="btn btn-primary lg:hidden">
+            Book a Session
+            <ArrowRight aria-hidden="true" />
+          </Link>
+          <Link href="/services" className="btn btn-ghost-dark lg:hidden">
+            Explore Services
+          </Link>
+          <Link href="/services" className="btn btn-primary hidden lg:inline-flex">
+            Explore Services
+            <ArrowRight aria-hidden="true" />
+          </Link>
         </div>
-
-        {/* <div className="mt-16 flex items-center justify-center gap-8 text-sm text-ivory/70">
-          <div>22 Years Navy Discipline</div>
-          <div className="h-4 w-px bg-white/30" />
-          <div>15+ Certifications</div>
-          <div className="h-4 w-px bg-white/30" />
-          <div>Nature-Based Healing</div>
-        </div> */}
       </div>
 
-      <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-ivory/60">
-        <span className="text-xs tracking-widest">SCROLL TO EXPLORE</span>
-        <div className="h-12 w-px bg-gradient-to-b from-transparent via-ivory/40 to-transparent" />
-      </div>
+      <p
+        aria-hidden="true"
+        className="hero-scroll-hint relative z-10 pb-[1.375rem] text-center text-[0.6875rem] tracking-[0.3em] text-ivory/75"
+      >
+        SCROLL TO EXPLORE
+      </p>
     </section>
   );
 }

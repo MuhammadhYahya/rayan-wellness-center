@@ -7,6 +7,8 @@ import Footer from '@/components/layout/Footer';
 import { getServices } from '@/lib/sanity/queries';
 
 export const metadata: Metadata = {
+  // Own address for Google (otherwise the page inherits the home page's "/").
+  alternates: { canonical: '/contact' },
   title: 'Book a Session',
   description:
     'Book your massage, yoga or wellness session in Matugama, Sri Lanka via WhatsApp or phone. Open Monday-Sunday, 9 AM-7 PM. We reply within a few hours.',
