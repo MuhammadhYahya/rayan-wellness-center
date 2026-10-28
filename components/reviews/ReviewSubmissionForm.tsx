@@ -189,9 +189,12 @@ export default function ReviewSubmissionForm({
                         value={value}
                         checked={rating === value}
                         onChange={() => setRating(value)}
+                        // Screen readers say "4 stars" instead of an unnamed button.
+                        aria-label={`${value} ${value === 1 ? 'star' : 'stars'}`}
                         className="sr-only"
                       />
                       <Star
+                        aria-hidden="true"
                         className={`h-7 w-7 transition ${
                           value <= rating ? 'fill-sage text-sage' : 'text-sage/35'
                         }`}

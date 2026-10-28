@@ -2,8 +2,9 @@ import Image from 'next/image';
 
 import type { GalleryItem } from '@/lib/gallery';
 
+// No longer used by the Gallery page (it now uses GalleryRow); safe to delete.
 type GalleryGridProps = {
-  images: GalleryItem[];
+  images: (GalleryItem & { category: string })[];
 };
 
 export default function GalleryGrid({ images }: GalleryGridProps) {

@@ -235,6 +235,16 @@ html[data-top] .site-header::before {
 .site-header:has(details[open])::before {
   opacity: 0;
 }
+/* Pages whose top section is light (About) keep the bar solid green even at the
+   top, so the white logo and menu stay readable. Older browsers without :has
+   still get the clear bar over the green strip at the top of that page. */
+html:has(.solid-top-bar) .site-header {
+  background-color: #1a2e1a;
+  box-shadow: 0 1px 0 rgba(245, 240, 232, 0.08);
+}
+html:has(.solid-top-bar) .site-header::before {
+  opacity: 0;
+}
 .site-header.is-hidden {
   transform: translateY(-100%);
 }

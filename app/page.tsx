@@ -6,7 +6,7 @@ import WhyChooseUs from '@/components/home/WhyChooseUs';
 import Testimonials from '@/components/home/Testimonials';
 import GalleryPreview from '@/components/home/GalleryPreview';
 import Footer from '@/components/layout/Footer';
-import { getFeaturedReviews, getServices } from '@/lib/sanity/queries';
+import { getCertificateCount, getFeaturedReviews, getServices } from '@/lib/sanity/queries';
 import {
   BUSINESS_NAME,
   EMAIL,
@@ -16,9 +16,10 @@ import {
 } from '@/lib/site';
 
 export default async function Home() {
-  const [services, reviews] = await Promise.all([
+  const [services, reviews, certificateCount] = await Promise.all([
     getServices(),
     getFeaturedReviews(),
+    getCertificateCount(),
   ]);
 
   // Structured data so Google understands the business (name, place, contact, services).
@@ -51,9 +52,9 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       <Hero />
-      <Stats />
+      <Stats certificateCount={certificateCount} />
       <ServicesGrid services={services} />
-      <WhyChooseUs />
+      <WhyChooseUs certificateCount={certificateCount} />
       <Testimonials reviews={reviews} />
       <GalleryPreview />
       <Footer />

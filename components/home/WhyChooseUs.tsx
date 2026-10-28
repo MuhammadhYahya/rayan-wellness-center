@@ -6,7 +6,7 @@ import SectionHeading from './SectionHeading';
 const QUOTE =
   'Before I begin, I ask where it hurts, how you move and how you want to feel afterwards. Those small details decide your treatment — not a fixed routine.';
 
-const reasons = [
+const reasonsFor = (certificateCount: number) => [
   {
     title: 'It starts with listening',
     desc: 'Every session begins with a short talk about your pain, your sport or work, and your goals — so the treatment fits your body.',
@@ -17,7 +17,7 @@ const reasons = [
   },
   {
     title: 'The right technique for you',
-    desc: 'With 10+ certifications in sports massage, Thai massage therapy, yoga and more, Rayan chooses the method that suits your body.',
+    desc: `With ${certificateCount}+ certifications in sports massage, Thai massage therapy, yoga and more, Rayan chooses the method that suits your body.`,
   },
   {
     title: 'Space to fully relax',
@@ -25,7 +25,10 @@ const reasons = [
   },
 ];
 
-export default function WhyChooseUs() {
+// The certificate number comes from Sanity (see getCertificateCount).
+export default function WhyChooseUs({ certificateCount }: { certificateCount: number }) {
+  const reasons = reasonsFor(certificateCount);
+
   return (
     <section aria-labelledby="why-title" className="bg-white py-[4.5rem] lg:py-28">
       <div className="site-container">

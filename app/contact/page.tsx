@@ -1,17 +1,23 @@
-// import Link from 'next/link';
 import type { Metadata } from 'next';
 import { CalendarDays, Clock3, MessageCircle } from 'lucide-react';
 
 import BookingForm from '@/components/contact/BookingForm';
 import Footer from '@/components/layout/Footer';
 import { getServices } from '@/lib/sanity/queries';
+import { shareTags } from '@/lib/seo';
+import { BUSINESS_NAME } from '@/lib/site';
+
+const TITLE = 'Book a Session';
+const DESCRIPTION =
+  'Book your massage, yoga or wellness session in Matugama, Sri Lanka via WhatsApp or phone. Open Monday-Sunday, 9 AM-7 PM. We reply within a few hours.';
 
 export const metadata: Metadata = {
   // Own address for Google (otherwise the page inherits the home page's "/").
   alternates: { canonical: '/contact' },
-  title: 'Book a Session',
-  description:
-    'Book your massage, yoga or wellness session in Matugama, Sri Lanka via WhatsApp or phone. Open Monday-Sunday, 9 AM-7 PM. We reply within a few hours.',
+  title: TITLE,
+  description: DESCRIPTION,
+  // Link preview on WhatsApp, Facebook, etc.
+  ...shareTags({ title: `${TITLE} | ${BUSINESS_NAME}`, description: DESCRIPTION, path: '/contact' }),
 };
 
 type ContactPageProps = {

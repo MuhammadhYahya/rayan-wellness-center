@@ -14,13 +14,19 @@ import {
   groupServices,
   serviceAnchor,
 } from '@/lib/service-display';
+import { shareTags } from '@/lib/seo';
+
+const TITLE = 'Massage & Yoga Services';
+const DESCRIPTION =
+  'Sports massage, deep tissue, hot stone, Thai massage therapy, Hawaiian Lomi Lomi and Hatha yoga in Matugama, Sri Lanka. Book your session today.';
 
 export const metadata: Metadata = {
-  title: 'Massage & Yoga Services',
-  description:
-    'Sports massage, deep tissue, hot stone, Thai massage therapy, Hawaiian Lomi Lomi, reflexology and Hatha yoga in Matugama, Sri Lanka. Book your session today.',
+  title: TITLE,
+  description: DESCRIPTION,
   // Without this the page inherits the home page's canonical ("/") from the layout.
   alternates: { canonical: '/services' },
+  // Link preview on WhatsApp, Facebook, etc.
+  ...shareTags({ title: `${TITLE} | ${BUSINESS_NAME}`, description: DESCRIPTION, path: '/services' }),
 };
 
 // Design "C · Chapters": services grouped into chapters, each with one photo
@@ -137,6 +143,9 @@ export default async function ServicesPage() {
                   alt={group.photo.alt}
                   fill
                   sizes="(max-width: 1023px) 100vw, 40vw"
+                  // The first chapter photo is near the top of the page: load it straight
+                  // away instead of waiting until it scrolls into view.
+                  loading={groupIndex === 0 ? 'eager' : 'lazy'}
                   className="object-cover"
                   style={{ objectPosition: group.photo.position ?? '50% 50%' }}
                 />
@@ -183,7 +192,8 @@ export default async function ServicesPage() {
                         ) : null}
                         <Link
                           href={bookingHref(service)}
-                          aria-label={`Book ${title}`}
+                          // Name starts with the visible words, then says which treatment.
+                          aria-label={`Book this treatment: ${title}`}
                           className="mt-2.5 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-moss hover:text-forest lg:col-start-2 lg:row-span-2 lg:row-start-2 lg:mt-0 lg:self-end lg:justify-self-end"
                         >
                           Book this treatment

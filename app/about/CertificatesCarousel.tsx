@@ -38,31 +38,46 @@ export default function CertificatesCarousel({ certificates }: { certificates: C
       {/* Navigation */}
       <div className="flex items-center justify-center gap-6">
         <button
+          type="button"
           onClick={prev}
+          aria-label="Previous certificate"
           className="flex h-12 w-12 items-center justify-center rounded-full border border-sage/20 hover:bg-sage/5 transition"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-5 w-5" aria-hidden="true" />
         </button>
 
-        <div className="flex gap-2">
-          {certificates.map((_, index) => (
+        {/* Each dot sits in a 24px tap area (big enough for a finger); the dot itself stays small.
+            Phones: dots hidden (12 finger-sized dots don't fit beside the arrows) —
+            the arrows and the "Certificate 1 of 12" line above do the same job. */}
+        <div className="hidden sm:flex">
+          {certificates.map((certificate, index) => (
             <button
               key={index}
+              type="button"
               onClick={() => setCurrent(index)}
-              className={`h-2.5 w-2.5 rounded-full transition-all ${
-                index === current ? 'bg-moss w-8' : 'bg-sage/30'
-              }`}
-            />
+              aria-label={`Show certificate ${index + 1}: ${certificate.title}`}
+              aria-current={index === current ? 'true' : undefined}
+              className="flex h-6 min-w-6 items-center justify-center px-1"
+            >
+              <span
+                aria-hidden="true"
+                className={`block h-2.5 rounded-full transition-all ${
+                  index === current ? 'w-8 bg-moss' : 'w-2.5 bg-sage/30'
+                }`}
+              />
+            </button>
           ))}
         </div>
 
         <button
+          type="button"
           onClick={next}
+          aria-label="Next certificate"
           className="flex h-12 w-12 items-center justify-center rounded-full border border-sage/20 hover:bg-sage/5 transition"
         >
-          <ChevronRight className="h-5 w-5" />
+          <ChevronRight className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
     </div>
   );
-}
+}

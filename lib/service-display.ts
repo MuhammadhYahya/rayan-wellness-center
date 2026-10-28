@@ -49,7 +49,7 @@ const GROUPS: (Omit<ServiceGroup, 'services'> & { match: RegExp })[] = [
     title: 'Sports & recovery',
     intro: 'For athletes, active people and anyone with tight, sore muscles.',
     photo: {
-      src: '/assets/images/gallery/g-05.png',
+      src: '/assets/images/gallery/g-05.jpg',
       alt: 'Rayan with a client outside a massage centre',
       position: '50% 70%',
     },
@@ -61,7 +61,7 @@ const GROUPS: (Omit<ServiceGroup, 'services'> & { match: RegExp })[] = [
     intro: 'Slow down, release stress and let your body reset.',
     photo: {
       src: '/assets/images/hero-bg.jpg',
-      alt: 'Misty green hills and palm trees near Keeranthidiya',
+      alt: 'Misty tropical forest',
       position: '50% 60%',
     },
     match: /swedish|hot stone|bamboo|lomi|lymph|reflex|aroma|relax/i,
@@ -71,9 +71,9 @@ const GROUPS: (Omit<ServiceGroup, 'services'> & { match: RegExp })[] = [
     title: 'Thai massage & yoga',
     intro: 'Stretch, breathe and move more freely.',
     photo: {
-      src: '/assets/images/gallery/g-03.jpeg',
-      alt: 'Rayan holding a kneeling yoga pose',
-      position: '50% 55%',
+      src: '/assets/images/gallery/rayan-thai-massage-back-stretch.jpg',
+      alt: 'Rayan smiling as he gives a Thai massage back stretch at his studio',
+      position: '47% 50%',
     },
     match: /thai|yoga/i,
   },
@@ -85,7 +85,7 @@ const OTHER: Omit<ServiceGroup, 'services'> = {
   intro: 'Other sessions Rayan offers.',
   photo: {
     src: '/assets/images/hero-bg.jpg',
-    alt: 'Misty green hills and palm trees near Keeranthidiya',
+    alt: 'Misty tropical forest',
   },
 };
 

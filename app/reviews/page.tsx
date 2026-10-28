@@ -1,20 +1,26 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, CalendarDays, MessageCircle, Star } from 'lucide-react';
+import { MessageCircle, Star } from 'lucide-react';
 
 import Footer from '@/components/layout/Footer';
 import ReviewSubmissionForm from '@/components/reviews/ReviewSubmissionForm';
 import ReviewsFilter from '@/components/reviews/ReviewsFilter';
 import { getApprovedReviews, getServices } from '@/lib/sanity/queries';
 import { hasSanityWriteToken } from '@/lib/sanity/client';
+import { shareTags } from '@/lib/seo';
+import { BUSINESS_NAME } from '@/lib/site';
+
+const TITLE = 'Client Reviews & Testimonials';
+const DESCRIPTION =
+  'Read real stories from clients who experienced massage therapy, sports recovery and yoga sessions at Rayan\'s Recovery & Wellness Center in Matugama, Sri Lanka.';
 
 export const metadata: Metadata = {
   // Own address for Google (otherwise the page inherits the home page's "/").
   alternates: { canonical: '/reviews' },
-  title: 'Client Reviews & Testimonials',
-  description:
-    'Read real stories from clients who experienced massage therapy, sports recovery and yoga sessions at Rayan\'s Recovery & Wellness Center in Matugama, Sri Lanka.',
+  title: TITLE,
+  description: DESCRIPTION,
+  // Link preview on WhatsApp, Facebook, etc.
+  ...shareTags({ title: `${TITLE} | ${BUSINESS_NAME}`, description: DESCRIPTION, path: '/reviews' }),
 };
 
 type ReviewsPageProps = {

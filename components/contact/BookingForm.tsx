@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-import Link from 'next/link';
 import { CheckCircle2, Clock3, LoaderCircle, Mail, MessageCircle, Send } from 'lucide-react';
 
 import type { Service } from '@/lib/sanity/types';

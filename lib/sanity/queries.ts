@@ -3,6 +3,7 @@ import 'server-only';
 import { getSanityClient } from '@/lib/sanity/client';
 import { urlForImage } from '@/lib/sanity/image';
 import type { Certificate, Review, Service } from '@/lib/sanity/types';
+import { fallbackCertificates } from '@/lib/certificates';
 
 const certificatesQuery = `*[_type == "certificate" && defined(image.asset)] | order(order asc, _createdAt asc) {
   _id,
@@ -21,6 +22,13 @@ const servicesQuery = `*[_type == "service"] | order(order asc, title asc) {
   order,
   iconKey,
   image
+}`;
+
+// Only what the footer needs (name + link), so this request stays tiny.
+const footerServicesQuery = `*[_type == "service"] | order(order asc, title asc) {
+  _id,
+  title,
+  "slug": slug.current
 }`;
 
 const reviewFields = `
@@ -120,4 +128,38 @@ export async function getCertificates(): Promise<Certificate[]> {
       ? urlForImage(certificate.image).width(1600).fit('max').url()
       : undefined,
   }));
+}
+
+// Services listed in the footer on every page. Added or removed services in Sanity
+// show up here automatically (within 5 minutes — the list is cached so pages stay
+// fast). If Sanity can't be reached, the footer simply links to /services instead
+// of breaking the page.
+export async function getFooterServices(): Promise<Pick<Service, '_id' | 'title' | 'slug'>[]> {
+  try {
+    const client = getSanityClient();
+    return await client.fetch<Pick<Service, '_id' | 'title' | 'slug'>[]>(
+      footerServicesQuery,
+      {},
+      { next: { revalidate: 300 } }
+    );
+  } catch (error) {
+    console.error('Failed to load footer services from Sanity:', error);
+    return [];
+  }
+}
+
+// Same certificates the About page shows (Sanity first, the built-in list if Sanity
+// has none yet), so the number on Home / Gallery always matches the About page.
+const certificateCountQuery = `count(*[_type == "certificate" && defined(image.asset)])`;
+
+/** How many certificates Rayan has. Updates on its own within 5 minutes of adding one in Sanity. */
+export async function getCertificateCount(): Promise<number> {
+  try {
+    const client = getSanityClient();
+    const count = await client.fetch<number>(certificateCountQuery, {}, { next: { revalidate: 300 } });
+    if (count > 0) return count;
+  } catch (error) {
+    console.error('Failed to load the certificate count from Sanity:', error);
+  }
+  return fallbackCertificates.length;
 }

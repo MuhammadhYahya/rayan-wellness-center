@@ -1,19 +1,26 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, MapPin, Target, Eye } from 'lucide-react';
+import { MapPin, Target, Eye } from 'lucide-react';
 import CertificatesCarousel from './CertificatesCarousel';
+import OurSpace from './OurSpace';
 
 import Footer from '@/components/layout/Footer';
 import { fallbackCertificates, type CertificateItem } from '@/lib/certificates';
 import { getCertificates } from '@/lib/sanity/queries';
+import { shareTags } from '@/lib/seo';
+import { BUSINESS_NAME } from '@/lib/site';
+
+const TITLE = 'About Our Wellness Center & Founder';
+const DESCRIPTION =
+  'Meet Rayan Vidumina Jayamanna, a certified massage therapist and yoga instructor bringing 22 years of discipline and professional massage expertise to Matugama, Sri Lanka.';
 
 export const metadata: Metadata = {
   // Own address for Google (otherwise the page inherits the home page's "/").
   alternates: { canonical: '/about' },
-  title: 'About Our Wellness Center & Founder',
-  description:
-    'Meet Rayan Vidumina Jayamanna, a certified massage therapist and yoga instructor bringing 22 years of discipline and professional massage expertise to Matugama, Sri Lanka.',
+  title: TITLE,
+  description: DESCRIPTION,
+  // Link preview on WhatsApp, Facebook, etc.
+  ...shareTags({ title: `${TITLE} | ${BUSINESS_NAME}`, description: DESCRIPTION, path: '/about' }),
 };
 
 async function loadCertificates(): Promise<CertificateItem[]> {
@@ -39,72 +46,98 @@ export default async function AboutPage() {
 
   return (
     <main className="min-h-screen bg-ivory">
-      {/* Hero */}
-      <section className="bg-forest px-5 pt-20 pb-12 md:pt-24 md:pb-16 text-ivory">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-3 text-xs uppercase tracking-[0.4em] text-sage">OUR STORY</p>
-          <h1 className="font-display text-4xl md:text-6xl leading-tight">
-            Meet Your Healer
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-sage/90 max-w-2xl mx-auto">
-            From 22 years in the Sri Lanka Navy to a life dedicated to healing
-          </p>
+      <section aria-labelledby="about-title" className="solid-top-bar overflow-hidden border-b border-line bg-ivory">
+        <div aria-hidden="true" className="h-16 bg-forest lg:h-20" />
+        <div className="site-container grid gap-6 pt-10 text-center lg:grid-cols-2 lg:items-end lg:gap-12 lg:pt-14 lg:text-left">
+          <div className="lg:pb-[4.5rem]">
+            <p className="text-xs font-medium uppercase tracking-[0.22em] text-moss">Our story</p>
+            <h1 id="about-title" className="mt-3 font-display text-[2.25rem] leading-[1.12] text-forest sm:text-5xl lg:text-[3.75rem]">
+              Meet Your Healer
+            </h1>
+            <p className="mt-3.5 font-display text-xl leading-[1.35] text-forest">
+              Rayan Vidumina Jayamanna
+              <span className="mt-1 block font-sans text-sm text-moss">Founder &amp; Lead Therapist</span>
+            </p>
+            <p className="mx-auto mt-4 max-w-[30rem] text-balance text-[1.0625rem] font-light leading-[1.8] text-ink-muted lg:mx-0">
+              From 22 years in the Sri Lanka Navy to a life dedicated to healing
+            </p>
+            <ul className="mt-7 grid grid-cols-3 border-t border-line lg:max-w-[34rem]">
+              {[
+                { value: '22', label: 'years in the Sri Lanka Navy' },
+                // Same live count as the Home page (certificates in Sanity).
+                { value: `${certificates.length}+`, label: 'certificates' },
+                { value: '1', label: 'studio in Keeranthidiya' },
+              ].map((fact, index) => (
+                <li
+                  key={fact.label}
+                  className={`px-1 pt-4 leading-[1.3] lg:px-5 lg:pt-[1.125rem] lg:first:pl-0 ${
+                    index > 0 ? 'border-l border-line' : ''
+                  }`}
+                >
+                  <span className="block font-display text-2xl text-forest">{fact.value}</span>
+                  <span className="mt-1 block text-xs text-ink-muted">{fact.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="relative mx-auto h-[22rem] w-full max-w-[24rem] lg:h-[31rem] lg:max-w-none">
+            <span
+              aria-hidden="true"
+              className="absolute bottom-[-24%] left-1/2 aspect-square w-[min(104%,23.5rem)] -translate-x-1/2 rounded-full border-[1.5px] border-[#cfd8c6] lg:bottom-[-27%] lg:w-[31rem]"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute bottom-[-18%] left-1/2 aspect-square w-[min(88%,20rem)] -translate-x-1/2 rounded-full bg-[#e8e2d5] lg:bottom-[-20%] lg:w-[27rem]"
+            />
+            <Image
+              src="/assets/images/rayan-vidumina-jayamanna-cutout.png"
+              alt="Rayan Vidumina Jayamanna, founder of Rayan’s Recovery & Wellness Center"
+              width={645}
+              height={990}
+              sizes="(max-width: 1023px) 240px, (max-width: 1535px) 330px, 480px"
+              className="absolute bottom-0 left-1/2 h-[96%] w-auto max-w-none -translate-x-1/2"
+              preload
+            />
+          </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="px-5 py-16 md:py-20">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-            
-            {/* Photo */}
-            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-xl lg:aspect-square">
-              <Image
-                src="/assets/images/rayan-portrait.jpeg"
-                alt="Rayan Vidumina Jayamanna"
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+      {/* His story: then (Navy) and now (therapist), then his own words. */}
+      <section className="bg-white py-16 lg:py-[5.5rem]">
+        <div className="site-container">
+          <div className="grid gap-9 text-center lg:grid-cols-2 lg:gap-16 lg:text-left">
+            <div className="lg:border-t lg:border-line lg:pt-7">
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-moss">Then</p>
+              <h2 className="mt-2 font-display text-[1.625rem] leading-[1.3] text-forest">22 years in the Sri Lanka Navy</h2>
+              <p className="mx-auto mt-3.5 max-w-[30rem] text-[1.0625rem] leading-[1.85] text-ink-muted lg:mx-0 lg:max-w-none">
+                After 22 years of honorable service as a Leading Seaman in the Sri Lanka Navy,
+                Rayan transitioned his discipline and precision into the healing arts.
+              </p>
             </div>
-
-            {/* Bio */}
-            <div className="space-y-8">
-              <div>
-                <h2 className="font-display text-4xl md:text-5xl text-forest mb-2">
-                  Rayan Vidumina Jayamanna
-                </h2>
-                <p className="text-moss font-medium">Founder & Lead Therapist</p>
-              </div>
-
-              <div className="prose prose-lg max-w-none text-charcoal/80 leading-relaxed">
-                <p>
-                  After 22 years of honorable service as a Leading Seaman in the Sri Lanka Navy, 
-                  Rayan transitioned his discipline and precision into the healing arts.
-                </p>
-                <p>
-                  A certified Massage Therapist and Yoga Instructor, he brings together sports science, 
-                  military-grade attention to detail, and certified Thai massage techniques to create truly 
-                  transformative wellness experiences.
-                </p>
-              </div>
-
-              {/* Quote */}
-              <div className="italic border-l-4 border-moss pl-6 text-charcoal/80">
-                “Discipline, compassion, and deep knowledge are the pillars I bring from my military service into every healing session.”
-                <p className="mt-4 text-sm text-moss">— Rayan Vidumina Jayamanna</p>
-              </div>
-
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-moss hover:text-forest transition font-medium"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back to Home
-              </Link>
+            <div className="lg:border-t lg:border-line lg:pt-7">
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-moss">Now</p>
+              <h2 className="mt-2 font-display text-[1.625rem] leading-[1.3] text-forest">Massage therapist &amp; yoga instructor</h2>
+              <p className="mx-auto mt-3.5 max-w-[30rem] text-[1.0625rem] leading-[1.85] text-ink-muted lg:mx-0 lg:max-w-none">
+                A certified Massage Therapist and Yoga Instructor, he brings together sports science,
+                military-grade attention to detail, and certified Thai massage techniques to create truly
+                transformative wellness experiences.
+              </p>
             </div>
           </div>
+
+          <figure className="mx-auto mt-14 max-w-[46rem] text-center">
+            {/* Opening quote mark (decoration only). */}
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="mx-auto mb-4 h-10 w-10 fill-sage">
+              <path d="M9.5 6C6.5 7.2 4.5 9.9 4.5 13.4V18h6v-6H7.6c.2-2 1.4-3.6 3.2-4.4L9.5 6zm9 0c-3 1.2-5 3.9-5 7.4V18h6v-6h-2.9c.2-2 1.4-3.6 3.2-4.4L18.5 6z" />
+            </svg>
+            <blockquote>
+              <p className="font-display text-[1.375rem] italic leading-[1.5] text-forest lg:text-[1.875rem]">
+                “Discipline, compassion, and deep knowledge are the pillars I bring from my military service into every healing session.”
+              </p>
+            </blockquote>
+            <figcaption className="mt-4 text-sm text-moss">— Rayan Vidumina Jayamanna</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -158,6 +191,9 @@ export default async function AboutPage() {
         </div>
       </section>
 
+      {/* Our space: real photos of the studio */}
+      <OurSpace />
+
       {/* Location Section */}
       <section className="px-5 py-16 md:py-20">
         <div className="mx-auto max-w-5xl">
@@ -173,6 +209,7 @@ export default async function AboutPage() {
 
           <div className="overflow-hidden rounded-[2rem] border border-sage/15 shadow-sm bg-white">
             <iframe
+              title="Map showing Rayan's Recovery & Wellness Center in Keeranthidiya"
               src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3964.3612922007496!2d80.059968!3d6.47584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMjgnMzMuMCJOIDgwwrAwMyczNS45IkU!5e0!3m2!1sen!2slk!4v1779545711805!5m2!1sen!2slk"
               width="100%"
               height="460"

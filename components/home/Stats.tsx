@@ -1,12 +1,13 @@
 // Real numbers are written straight into the HTML: they show on every phone
 // (no count-up animation that needs JavaScript) and Google can read them.
-const stats = [
-  { value: '22+', label: 'Years of Navy discipline' },
-  { value: '10+', label: 'Professional certifications' },
-  { value: '1,200+', label: 'Hours of training' },
-];
+// The certificate number comes from Sanity (see getCertificateCount).
+export default function Stats({ certificateCount }: { certificateCount: number }) {
+  const stats = [
+    { value: '22+', label: 'Years of Navy discipline' },
+    { value: `${certificateCount}+`, label: 'Professional certifications' },
+    { value: '1,200+', label: 'Hours of training' },
+  ];
 
-export default function Stats() {
   return (
     <section aria-label="Rayan at a glance" className="border-b border-line bg-white">
       <div className="site-container">

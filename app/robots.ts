@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rayanwellness.com'
+  // Always the www address — the same one used for canonicals and the sitemap.
+  const baseUrl = 'https://www.rayanwellness.com'
 
   return {
     rules: {

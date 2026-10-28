@@ -30,9 +30,10 @@ export default function Navbar() {
       <div className="site-container flex h-full items-center justify-between gap-8">
         <Logo />
 
+        {/* Laptops: no "Home" link here, the logo already goes home. The phone menu keeps it. */}
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex gap-8 text-[0.9375rem] font-medium">
-            {NAV_LINKS.map((link) => {
+            {NAV_LINKS.filter((link) => link.href !== '/').map((link) => {
               const active = isActive(link.href);
               return (
                 <li key={link.href}>

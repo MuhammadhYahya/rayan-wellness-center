@@ -14,17 +14,9 @@ import {
   WHATSAPP_BOOKING_URL,
   WHATSAPP_URL,
 } from '@/lib/site';
+import { getFooterServices } from '@/lib/sanity/queries';
+import { displayTitle, serviceAnchor } from '@/lib/service-display';
 import Logo from './Logo';
-
-const footerServices = [
-  'Sports Massage',
-  'Deep Tissue Massage',
-  'Thai Traditional Massage',
-  'Reflexology',
-  'Hatha Yoga',
-  'Hot Stone Massage',
-  'Hawaiian Lomi Lomi',
-];
 
 const socials = [
   { href: SOCIAL_LINKS.facebook, label: 'Facebook', Icon: FaFacebookF },
@@ -32,7 +24,11 @@ const socials = [
   { href: SOCIAL_LINKS.tiktok, label: 'TikTok', Icon: AiFillTikTok },
 ];
 
-export default function Footer() {
+// The "Our services" list comes from Sanity, so a service added there appears here
+// on its own. Each name links to that service on the Services page.
+export default async function Footer() {
+  const services = await getFooterServices();
+
   return (
     <footer id="site-footer" className="border-t border-line-dark bg-forest pb-[6.5rem] pt-[3.75rem] text-ivory lg:pb-7">
       <div className="site-container">
@@ -84,13 +80,21 @@ export default function Footer() {
           <div>
             <h2 className="text-xs font-medium uppercase tracking-[0.2em] text-sage">Our services</h2>
             <ul className="mt-[1.125rem] space-y-3 text-[0.9375rem] leading-normal">
-              {footerServices.map((service) => (
-                <li key={service}>
+              {services.length > 0 ? (
+                services.map((service) => (
+                  <li key={service._id}>
+                    <Link href={`/services#${serviceAnchor(service)}`} className="transition-colors hover:text-sage">
+                      {displayTitle(service.title)}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li>
                   <Link href="/services" className="transition-colors hover:text-sage">
-                    {service}
+                    View all treatments
                   </Link>
                 </li>
-              ))}
+              )}
             </ul>
           </div>
 

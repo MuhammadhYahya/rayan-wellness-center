@@ -1,22 +1,21 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { BUSINESS_NAME } from '@/lib/site';
-
 export default function Logo() {
   return (
     <Link
       href="/"
-      aria-label={`${BUSINESS_NAME} — home`}
+      // Starts with the words shown on screen, so voice control ("click Rayan's") works.
+      aria-label="Rayan's Recovery & Wellness – home"
       className="flex items-center gap-3 text-ivory"
     >
       <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white lg:h-12 lg:w-12">
-        {/* Served at icon size (sizes) instead of the full 1024px file. */}
+        {/* Small, clean copy of the logo (512×768); served at icon size via sizes. */}
         <Image
           src="/assets/logo.png"
           alt=""
-          width={1024}
-          height={1536}
+          width={512}
+          height={768}
           sizes="48px"
           className="h-[76%] w-auto"
         />

@@ -11,7 +11,7 @@ export default function AboutTeaser() {
         <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl shadow-xl md:aspect-square">
             <Image
-              src="/assets/images/rayan-portrait.jpeg"
+              src="/assets/images/rayan-vidumina-jayamanna.jpg"
               alt="Rayan Jayamanna - Founder of Rayan's Recovery & Wellness"
               fill
               className="object-cover transition-transform duration-700 hover:scale-105"
