@@ -7,7 +7,7 @@ import OurSpace from './OurSpace';
 import Footer from '@/components/layout/Footer';
 import { fallbackCertificates, type CertificateItem } from '@/lib/certificates';
 import { getCertificates } from '@/lib/sanity/queries';
-import { shareTags } from '@/lib/seo';
+import { ABOUT_SHARE_IMAGE, shareTags } from '@/lib/seo';
 import { BUSINESS_NAME } from '@/lib/site';
 
 const TITLE = 'About Our Wellness Center & Founder';
@@ -20,7 +20,12 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   // Link preview on WhatsApp, Facebook, etc.
-  ...shareTags({ title: `${TITLE} | ${BUSINESS_NAME}`, description: DESCRIPTION, path: '/about' }),
+  ...shareTags({
+    title: `${TITLE} | ${BUSINESS_NAME}`,
+    description: DESCRIPTION,
+    path: '/about',
+    image: ABOUT_SHARE_IMAGE,
+  }),
 };
 
 async function loadCertificates(): Promise<CertificateItem[]> {

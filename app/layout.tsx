@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { shareTags } from "@/lib/seo";
+import { HOME_SHARE_IMAGE, shareTags } from "@/lib/seo";
 import { BUSINESS_NAME } from "@/lib/site";
 
 const HOME_TITLE = "Massage, Yoga & Recovery Therapy in Matugama, Sri Lanka";
@@ -22,7 +22,12 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   // Link preview for the home page (each other page sets its own).
-  ...shareTags({ title: `${HOME_TITLE} | ${BUSINESS_NAME}`, description: HOME_DESCRIPTION, path: "/" }),
+  ...shareTags({
+    title: `${HOME_TITLE} | ${BUSINESS_NAME}`,
+    description: HOME_DESCRIPTION,
+    path: "/",
+    image: HOME_SHARE_IMAGE,
+  }),
 };
 
 const TOP_BAR_SCRIPT = `(function(){var d=document.documentElement;function u(){var y=window.pageYOffset||d.scrollTop||0;if(y<24){d.setAttribute('data-top','')}else{d.removeAttribute('data-top')}}u();window.addEventListener('scroll',u,false);})();`;
