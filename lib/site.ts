@@ -10,6 +10,10 @@ export const WHATSAPP_URL = 'https://wa.me/94762985339';
 export const WHATSAPP_BOOKING_URL =
   'https://wa.me/94762985339?text=Hi%20Rayan%2C%20I%27d%20like%20to%20book%20a%20session';
 
+// Google Business Profile "write a review" link (looks like https://g.page/r/XXXX/review).
+// Paste it between the quotes; the button on /reviews stays hidden while this is empty.
+export const GOOGLE_REVIEW_URL = '';
+
 export const SOCIAL_LINKS = {
   facebook: 'https://www.facebook.com/share/1FfTLPn4Zj/',
   instagram: 'https://www.instagram.com/rayans_recovery_wellness_cener',

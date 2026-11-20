@@ -3,12 +3,13 @@ import Image from 'next/image';
 import { MessageCircle, Star } from 'lucide-react';
 
 import Footer from '@/components/layout/Footer';
+import GoogleReviews from '@/components/reviews/GoogleReviews';
 import ReviewSubmissionForm from '@/components/reviews/ReviewSubmissionForm';
 import ReviewsFilter from '@/components/reviews/ReviewsFilter';
 import { getApprovedReviews, getServices } from '@/lib/sanity/queries';
 import { hasSanityWriteToken } from '@/lib/sanity/client';
 import { shareTags } from '@/lib/seo';
-import { BUSINESS_NAME } from '@/lib/site';
+import { BUSINESS_NAME, GOOGLE_REVIEW_URL } from '@/lib/site';
 
 const TITLE = 'Client Reviews & Testimonials';
 const DESCRIPTION =
@@ -59,9 +60,16 @@ export default async function ReviewsPage({ searchParams }: ReviewsPageProps) {
         </div>
       </section>
 
+  {/* Live Google reviews (Trustindex) */}
+  <section className="px-5 pt-12 md:pt-16">
+    <div className="mx-auto max-w-5xl">
+      <GoogleReviews />
+    </div>
+  </section>
+
   <section className="px-5 py-12 md:py-16">
   <div className="mx-auto max-w-5xl">
-    
+
     {/* Filter */}
     <div className="mb-10">
       <ReviewsFilter
@@ -81,6 +89,20 @@ export default async function ReviewsPage({ searchParams }: ReviewsPageProps) {
         Write Your Review
       </a>
     </div>
+
+    {GOOGLE_REVIEW_URL && (
+      <div className="-mt-4 mb-10 flex justify-center">
+        <a
+          href={GOOGLE_REVIEW_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 rounded-full border border-forest px-8 py-4 text-lg font-medium text-forest transition hover:bg-forest/5"
+        >
+          <Star className="h-5 w-5" />
+          Review Us on Google
+        </a>
+      </div>
+    )}
 
     {/* Reviews Grid - More Compact */}
     <div className="space-y-10">

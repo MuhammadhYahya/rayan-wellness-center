@@ -1,12 +1,15 @@
 // app/page.tsx
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+
 import Hero from '@/components/home/Hero';
 import Stats from '@/components/home/Stats';
 import ServicesGrid from '@/components/home/ServicesGrid';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
-import Testimonials from '@/components/home/Testimonials';
+import GoogleReviews from '@/components/reviews/GoogleReviews';
 import GalleryPreview from '@/components/home/GalleryPreview';
 import Footer from '@/components/layout/Footer';
-import { getCertificateCount, getFeaturedReviews, getServices } from '@/lib/sanity/queries';
+import { getCertificateCount, getServices } from '@/lib/sanity/queries';
 import {
   BUSINESS_NAME,
   EMAIL,
@@ -16,9 +19,8 @@ import {
 } from '@/lib/site';
 
 export default async function Home() {
-  const [services, reviews, certificateCount] = await Promise.all([
+  const [services, certificateCount] = await Promise.all([
     getServices(),
-    getFeaturedReviews(),
     getCertificateCount(),
   ]);
 
@@ -55,7 +57,33 @@ export default async function Home() {
       <Stats certificateCount={certificateCount} />
       <ServicesGrid services={services} />
       <WhyChooseUs certificateCount={certificateCount} />
-      <Testimonials reviews={reviews} />
+      {/* Live Google reviews (Trustindex) */}
+      <section aria-labelledby="reviews-title" className="bg-ivory py-[4.5rem] text-center lg:py-28">
+        <div className="site-container">
+          <p className="eyebrow-lines text-xs font-medium uppercase tracking-[0.22em] text-moss">
+            Client stories
+          </p>
+          <h2 id="reviews-title" className="mt-3.5 font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] text-forest">
+            What Our Clients Say
+          </h2>
+          <p className="mx-auto mt-[1.125rem] max-w-[36rem] text-[clamp(1.0625rem,1.3vw,1.1875rem)] font-light leading-[1.85] text-charcoal/70">
+            Real reviews from our clients on Google.
+          </p>
+
+          <div className="mt-11 text-left">
+            <GoogleReviews />
+          </div>
+
+          <Link
+            href="/reviews"
+            className="mt-[1.875rem] inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-moss transition-colors hover:text-forest"
+          >
+            Read more reviews
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+
       <GalleryPreview />
       <Footer />
     </main>
